@@ -1,0 +1,33 @@
+{
+    "name": "antonyz89/yii2-rbac-v2",
+    "description": "minor changes in model/crud templates",
+    "keywords": [
+        "antonyz89",
+        "yii2",
+        "extension",
+        "widget",
+        "rbac"
+    ],
+    "type": "yii2-extension",
+    "license": "BSD-3-Clause",
+    "support": {
+        "issues": "https://github.com/antonyz89/yii2-rbac-v2/issues",
+        "source": "https://github.com/antonyz89/yii2-rbac-v2"
+    },
+    "authors": [
+        {
+            "name": "Antony Gabriel"
+        }
+    ],
+    "require": {
+        "php": ">=7.2",
+        "yiisoft/yii2": "^2.0.5",
+        "antonyz89/yii2-many-to-many": "dev-master",
+        "antonyz89/yii2-seeder": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "antonyz89\\rbac\\": "src"
+        }
+    }
+}
