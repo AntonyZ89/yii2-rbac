@@ -13,7 +13,7 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```
-composer require antonyz89/yii2-rbac-v2 dev-master
+$ composer require antonyz89/yii2-rbac-v2 dev-master
 ```
 
 or add
@@ -27,6 +27,9 @@ to the require section of your `composer.json` file.
 Usage
 -----
 
+```
+$ php yii migrate/up --migrationPath=@antonyz89/rbac/migrations
+```
 ...
 
 Coming Soon

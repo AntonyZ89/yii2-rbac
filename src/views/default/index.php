@@ -6,23 +6,20 @@ use yii\helpers\Html;
 /* @var $content string */
 
 $controllers = Yii::$app->controller->module->controllers;
-$this->title = 'Welcome to Gii';
+
+$this->title = 'Welcome to RBAC Manager';
 ?>
 <div class="default-index">
-    <h1 class="border-bottom pb-3 mb-3">Welcome to Gii <small class="text-muted">a magical tool that can write code for you</small></h1>
+    <h1>Welcome to Gii <small class="text-muted">a magical tool that can write code for you</small></h1>
 
     <p class="lead mb-5">Start the fun with the following code generators:</p>
 
     <div class="row">
         <?php foreach ($controllers as $id => $controller): ?>
-        <div class="generator col-lg-4">
-            <h3><?= Html::encode($controller->id) ?></h3>
-            <p><?= $generator->getDescription() ?></p>
-            <p><?= Html::a('Start &raquo;', ['default/view', 'id' => $id], ['class' => ['btn', 'btn-outline-secondary']]) ?></p>
+        <div class="controller col-md-3">
+            <h3><?= Html::encode($id) ?></h3>
+            <p><?= Html::a('View &raquo;', ['default/view', 'id' => $id], ['class' => 'btn btn-primary']) ?></p>
         </div>
         <?php endforeach; ?>
     </div>
-
-    <p><a class="btn btn-success" href="http://www.yiiframework.com/extensions/?tag=gii">Get More Generators</a></p>
-
 </div>

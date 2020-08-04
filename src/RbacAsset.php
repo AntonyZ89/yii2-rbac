@@ -2,7 +2,11 @@
 
 namespace antonyz89\rbac;
 
+use yii\bootstrap\BootstrapAsset;
+use yii\bootstrap\BootstrapPluginAsset;
+use yii\bootstrap\BootstrapThemeAsset;
 use yii\web\AssetBundle;
+use yii\widgets\Menu;
 
 /**
  * This declares the asset files required by Rbac V2 .
@@ -18,6 +22,7 @@ class RbacAsset extends AssetBundle
     ];
     public $js = [];
     public $depends = [
-        'yii\web\YiiAsset'
+        'yii\web\YiiAsset',
+        'yii\bootstrap4\BootstrapAsset',
     ];
 }

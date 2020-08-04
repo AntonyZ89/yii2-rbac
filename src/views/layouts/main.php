@@ -1,12 +1,15 @@
 <?php
 
-use yii\widgets\Menu;
+use antonyz89\rbac\RbacAsset;
 use yii\helpers\Html;
+use yii\bootstrap4\NavBar;
+use yii\bootstrap4\Nav;
+use yii\web\View;
 
-/* @var $this \yii\web\View */
+/* @var $this View */
 /* @var $content string */
 
-$asset = yii\gii\RbacAsset::register($this);
+$asset = RbacAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -22,35 +25,25 @@ $asset = yii\gii\RbacAsset::register($this);
 <body>
     <div class="page-container">
         <?php $this->beginBody() ?>
-        <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-            <div class="container">
-                <?php echo Html::a(Html::img($asset->baseUrl . '/logo.png'), ['default/index'], [
-                    'class' => ['navbar-brand']
-                ]); ?>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#gii-nav"
-                        aria-controls="gii-nav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+        <?php NavBar::begin([
+            'brandLabel' => 'RBAC Manager',
+            'brandUrl' => Yii::$app->homeUrl,
+            'options' => [
+                'class' => 'navbar-dark bg-dark',
+            ],
+        ]);
 
-                <div class="collapse navbar-collapse" id="gii-nav">
-                    <?php
-                    echo Menu::widget([
-                        'options' => ['class' => ['navbar-nav', 'ml-auto']],
-                        'activateItems' => true,
-                        'itemOptions' => [
-                            'class' => ['nav-item']
-                        ],
-                        'linkTemplate' => '<a class="nav-link" href="{url}">{label}</a>',
-                        'items' => [
-                            ['label' => 'Home', 'url' => ['default/index']],
-                            ['label' => 'Help', 'url' => 'http://www.yiiframework.com/doc-2.0/ext-gii-index.html'],
-                            ['label' => 'Application', 'url' => Yii::$app->homeUrl],
-                        ]
-                    ]);
-                    ?>
-                </div>
-            </div>
-        </nav>
+        echo Nav::widget([
+            'options' => ['class' => 'navbar-nav navbar-right'],
+            'items' => [
+                ['label' => 'Home', 'url' => ['/site/index']],
+                ['label' => 'About', 'url' => ['/site/about']],
+                ['label' => 'Contact', 'url' => ['/site/contact']],
+            ],
+        ]);
+        NavBar::end();
+        ?>
+
         <div class="container content-container">
             <?= $content ?>
         </div>

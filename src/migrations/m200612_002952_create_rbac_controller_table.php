@@ -1,7 +1,5 @@
 <?php
 
-namespace antonyz89\rbac\migrations;
-
 use yii\db\Migration;
 
 /**
@@ -9,19 +7,24 @@ use yii\db\Migration;
  */
 class m200612_002952_create_rbac_controller_table extends Migration
 {
+    public const TABLE = '{{%rbac_controller}}';
+
     /**
      * {@inheritdoc}
      */
     public function safeUp()
     {
-        $this->createTable('{{%rbac_controller}}', [
-            'id' => $this->string()->notNull(),
+        $this->createTable(self::TABLE, [
+            'id' => $this->primaryKey(),
+
+            'name' => $this->string()->notNull(),
+            'application' => $this->string()->notNull(),
 
             'created_at' => $this->integer()->notNull(),
             'updated_at'=> $this->integer()->notNull()
         ]);
 
-        $this->addPrimaryKey('pk-rbac_controller-id', '{{%rbac_controller}}', 'id');
+        $this->createIndex('idx-rbac_controller-name-application', self::TABLE, ['name', 'application'], true);
     }
 
     /**
@@ -29,6 +32,6 @@ class m200612_002952_create_rbac_controller_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('{{%rbac_controller}}');
+        $this->dropTable(self::TABLE);
     }
 }

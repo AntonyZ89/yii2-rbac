@@ -1,20 +1,20 @@
 <?php
 
-namespace antonyz89\rbac\migrations;
-
 use yii\db\Migration;
 
 /**
- * Handles the creation of table `{{%profile}}`.
+ * Handles the creation of table `{{%rbac_profile}}`.
  */
-class m200612_005603_create_profile_table extends Migration
+class m200612_005603_create_rbac_profile_table extends Migration
 {
+    public const TABLE = '{{%rbac_profile}}';
+
     /**
      * {@inheritdoc}
      */
     public function safeUp()
     {
-        $this->createTable('{{%profile}}', [
+        $this->createTable(self::TABLE, [
             'id' => $this->primaryKey(),
 
             'name' => $this->string()->notNull(),
@@ -23,6 +23,8 @@ class m200612_005603_create_profile_table extends Migration
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull()
         ]);
+
+        $this->createIndex('idx-profile-name', self::TABLE, 'name', true);
     }
 
     /**
@@ -30,6 +32,6 @@ class m200612_005603_create_profile_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('{{%profile}}');
+        $this->dropTable(self::TABLE);
     }
 }
