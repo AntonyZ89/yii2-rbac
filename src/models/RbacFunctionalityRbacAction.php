@@ -4,6 +4,8 @@ namespace antonyz89\rbac\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "rbac_functionality_rbac_action".
@@ -12,10 +14,11 @@ use yii\behaviors\TimestampBehavior;
  * @property int $rbac_action_id
  * @property int $created_at
  *
- * @property RbacAction $rbacAction
- * @property RbacFunctionality $rbacFunctionality
+ * @property-read RbacAction $rbacAction
+ * @property-read RbacController $rbacController
+ * @property-read RbacFunctionality $rbacFunctionality
  */
-class RbacFunctionalityRbacAction extends \yii\db\ActiveRecord
+class RbacFunctionalityRbacAction extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -31,7 +34,10 @@ class RbacFunctionalityRbacAction extends \yii\db\ActiveRecord
     public function behaviors()
     {
         return [
-            TimestampBehavior::class,
+            [
+                'class' => TimestampBehavior::class,
+                'updatedAtAttribute' => false
+            ]
         ];
     }
 
@@ -65,7 +71,7 @@ class RbacFunctionalityRbacAction extends \yii\db\ActiveRecord
     /**
      * Gets query for [[RbacAction]].
      *
-     * @return \yii\db\ActiveQuery|RbacActionQuery
+     * @return ActiveQuery|RbacActionQuery
      */
     public function getRbacAction()
     {
@@ -73,9 +79,19 @@ class RbacFunctionalityRbacAction extends \yii\db\ActiveRecord
     }
 
     /**
+     * Gets query for [[RbacController]].
+     *
+     * @return ActiveQuery|RbacControllerQuery
+     */
+    public function getRbacController()
+    {
+        return $this->hasOne(RbacController::className(), ['id' => 'controller_id'])->via('rbacFunctionality');
+    }
+
+    /**
      * Gets query for [[RbacFunctionality]].
      *
-     * @return \yii\db\ActiveQuery|RbacFunctionalityQuery
+     * @return ActiveQuery|RbacFunctionalityQuery
      */
     public function getRbacFunctionality()
     {

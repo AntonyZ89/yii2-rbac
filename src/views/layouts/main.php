@@ -9,7 +9,7 @@ use yii\web\View;
 /* @var $this View */
 /* @var $content string */
 
-$asset = RbacAsset::register($this);
+RbacAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -23,6 +23,7 @@ $asset = RbacAsset::register($this);
     <?php $this->head() ?>
 </head>
 <body>
+    <?= \yii\bootstrap4\Modal::widget(['id' => 'modal']) ?>
     <div class="page-container">
         <?php $this->beginBody() ?>
         <?php NavBar::begin([

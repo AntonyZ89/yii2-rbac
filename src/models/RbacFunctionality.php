@@ -4,6 +4,8 @@ namespace antonyz89\rbac\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "rbac_functionality".
@@ -22,7 +24,7 @@ use yii\behaviors\TimestampBehavior;
  * @property RbacProfileRbacFunctionality[] $rbacProfileRbacFunctionalities
  * @property RbacProfile[] $rbacProfiles
  */
-class RbacFunctionality extends \yii\db\ActiveRecord
+class RbacFunctionality extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -76,7 +78,7 @@ class RbacFunctionality extends \yii\db\ActiveRecord
     /**
      * Gets query for [[Controller]].
      *
-     * @return \yii\db\ActiveQuery|RbacControllerQuery
+     * @return ActiveQuery|RbacControllerQuery
      */
     public function getController()
     {
@@ -86,7 +88,7 @@ class RbacFunctionality extends \yii\db\ActiveRecord
     /**
      * Gets query for [[RbacActions]].
      *
-     * @return \yii\db\ActiveQuery|RbacActionQuery
+     * @return ActiveQuery|RbacActionQuery
      */
     public function getRbacActions()
     {
@@ -96,7 +98,7 @@ class RbacFunctionality extends \yii\db\ActiveRecord
     /**
      * Gets query for [[RbacFunctionalityRbacActions]].
      *
-     * @return \yii\db\ActiveQuery|RbacFunctionalityRbacActionQuery
+     * @return ActiveQuery|RbacFunctionalityRbacActionQuery
      */
     public function getRbacFunctionalityRbacActions()
     {
@@ -106,7 +108,7 @@ class RbacFunctionality extends \yii\db\ActiveRecord
     /**
      * Gets query for [[RbacProfileRbacFunctionalities]].
      *
-     * @return \yii\db\ActiveQuery|RbacProfileRbacFunctionalityQuery
+     * @return ActiveQuery|RbacProfileRbacFunctionalityQuery
      */
     public function getRbacProfileRbacFunctionalities()
     {
@@ -116,7 +118,7 @@ class RbacFunctionality extends \yii\db\ActiveRecord
     /**
      * Gets query for [[RbacProfiles]].
      *
-     * @return \yii\db\ActiveQuery|RbacProfileQuery
+     * @return ActiveQuery|RbacProfileQuery
      */
     public function getRbacProfiles()
     {

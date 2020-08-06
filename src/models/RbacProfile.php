@@ -4,6 +4,7 @@ namespace antonyz89\rbac\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
 /**
@@ -69,7 +70,7 @@ class RbacProfile extends ActiveRecord
     /**
      * Gets query for [[RbacFunctionalities]].
      *
-     * @return \yii\db\ActiveQuery|RbacFunctionalityQuery
+     * @return ActiveQuery|RbacFunctionalityQuery
      */
     public function getRbacFunctionalities()
     {
@@ -79,7 +80,7 @@ class RbacProfile extends ActiveRecord
     /**
      * Gets query for [[RbacProfileRbacFunctionalities]].
      *
-     * @return \yii\db\ActiveQuery|RbacProfileRbacFunctionalityQuery
+     * @return ActiveQuery|RbacProfileRbacFunctionalityQuery
      */
     public function getRbacProfileRbacFunctionalities()
     {

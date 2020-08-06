@@ -5,6 +5,7 @@ namespace antonyz89\rbac\models;
 use antonyz89\rbac\models\base\ActiveRecord;
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "rbac_controller".
@@ -69,7 +70,7 @@ class RbacController extends ActiveRecord
     /**
      * Gets query for [[RbacActions]].
      *
-     * @return \yii\db\ActiveQuery|RbacActionQuery
+     * @return ActiveQuery|RbacActionQuery
      */
     public function getRbacActions()
     {
@@ -79,7 +80,7 @@ class RbacController extends ActiveRecord
     /**
      * Gets query for [[RbacFunctionalities]].
      *
-     * @return \yii\db\ActiveQuery|RbacFunctionalityQuery
+     * @return ActiveQuery|RbacFunctionalityQuery
      */
     public function getRbacFunctionalities()
     {

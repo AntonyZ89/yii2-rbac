@@ -4,21 +4,33 @@ namespace antonyz89\rbac;
 
 use antonyz89\rbac\models\RbacAction;
 use antonyz89\rbac\models\RbacController;
-use common\models\Admin;
 use TRegx\CleanRegex\Pattern;
 use Yii;
+use yii\base\BootstrapInterface;
 use yii\base\InvalidConfigException;
 use yii\base\Module as ModuleBase;
-use yii\helpers\ArrayHelper;
 use yii\helpers\Inflector;
 use yii\web\ForbiddenHttpException;
 
-class Module extends ModuleBase
+class Module extends ModuleBase implements BootstrapInterface
 {
     public $allowedIPs = ['127.0.0.1', '::1'];
 
     /** @var \antonyz89\rbac\models\Controller[] */
     public $controllers = [];
+
+    /**
+     * {@inheritdoc}
+     */
+    public function bootstrap($app)
+    {
+        $app->urlManager->addRules([
+            ['class' => 'yii\web\UrlRule', 'pattern' => $this->id, 'route' => "$this->id/default/index"],
+            ['class' => 'yii\web\UrlRule', 'pattern' => $this->id . '/<id:\w+>', 'route' => "$this->id/default/view"],
+            ['class' => 'yii\web\UrlRule', 'pattern' => $this->id . '/<controller:[\w\-]+>/<id:\d+>', 'route' => "$this->id/<controller>/<action>"],
+        ], false);
+    }
+
 
     /**
      * {@inheritdoc}
@@ -105,14 +117,16 @@ class Module extends ModuleBase
             return $value->name;
         }, RbacController::find()->all());
 
-        $not_inserted_ids = array_diff($db_controllers, array_keys($this->controllers));
+        $not_inserted_ids = array_diff(array_keys($this->controllers), $db_controllers);
 
         foreach ($this->controllers as $controller_id => $actions) {
             if (in_array($controller_id, $not_inserted_ids, true)) {
                 $controller = new RbacController();
                 $controller->application = $application;
                 $controller->name = $controller_id;
-                $controller->save();
+                if (!$controller->save()) {
+                    dd($controller->errors);
+                }
             }
 
             $this->insertActions($controller_id, $application, $actions);
@@ -128,8 +142,8 @@ class Module extends ModuleBase
         $rbacActions = array_map(static function ($value) {
             return $value->name;
         }, $controller->rbacActions);
-        
-        $not_inserted_actions = array_diff($rbacActions, $actions_id);
+
+        $not_inserted_actions = array_diff($actions_id, $rbacActions);
 
         foreach ($actions_id as $action_id) {
             if (in_array($action_id, $not_inserted_actions, true)) {
@@ -137,7 +151,7 @@ class Module extends ModuleBase
                 $rbacAction->rbac_controller_id = $controller->id;
                 $rbacAction->name = $action_id;
                 $rbacAction->save();
-                
+
             }
         }
     }
