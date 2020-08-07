@@ -1,7 +1,8 @@
 <?php
 
-namespace antonyz89\rbac\models;
+namespace antonyz89\rbac\models\query;
 
+use antonyz89\rbac\models\RbacFunctionality;
 use yii\db\ActiveQuery;
 
 /**
@@ -43,14 +44,26 @@ class RbacFunctionalityQuery extends ActiveQuery
     }
 
     /**
-     * @param integer $controller_id
+     * @param integer $rbac_profile_id
      * @param string $operator
      * @return RbacFunctionalityQuery
      */
-    public function whereController($controller_id, $operator = '=')
+    public function whereRbacProfile($rbac_profile_id, $operator = '=')
     {
         return $this->andWhere([
-            $operator, sprintf('%s.controller_id', RbacFunctionality::tableName()), $controller_id
+            $operator, sprintf('%s.rbac_profile_id', RbacFunctionality::tableName()), $rbac_profile_id
+        ]);
+    }
+
+    /**
+     * @param integer $rbac_controller_id
+     * @param string $operator
+     * @return RbacFunctionalityQuery
+     */
+    public function whereRbacController($rbac_controller_id, $operator = '=')
+    {
+        return $this->andWhere([
+            $operator, sprintf('%s.rbac_controller_id', RbacFunctionality::tableName()), $rbac_controller_id
         ]);
     }
 

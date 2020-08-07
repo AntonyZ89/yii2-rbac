@@ -2,29 +2,31 @@
 
 namespace antonyz89\rbac\models;
 
+use antonyz89\rbac\models\query\RbacActionQuery;
+use antonyz89\rbac\models\query\RbacFunctionalityQuery;
+use antonyz89\rbac\models\query\RbacFunctionalityRbacActionQuery;
+use antonyz89\rbac\models\query\RbacProfileRbacControllerQuery;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "rbac_functionality".
  *
  * @property int $id
- * @property int $controller_id
+ * @property int $rbac_profile_id
+ * @property int $rbac_controller_id
  * @property string $rule
- * @property string $name
- * @property string $description
+ * @property string|null $name
+ * @property string|null $description
  * @property int $created_at
  * @property int $updated_at
  *
- * @property RbacController $controller
  * @property RbacAction[] $rbacActions
  * @property RbacFunctionalityRbacAction[] $rbacFunctionalityRbacActions
- * @property RbacProfileRbacFunctionality[] $rbacProfileRbacFunctionalities
- * @property RbacProfile[] $rbacProfiles
+ * @property RbacProfileRbacController $rbacProfileRbacController
  */
-class RbacFunctionality extends ActiveRecord
+class RbacFunctionality extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -51,11 +53,12 @@ class RbacFunctionality extends ActiveRecord
     public function rules()
     {
         return [
-            [['controller_id', 'rule', 'name', 'description'], 'required'],
-            [['controller_id', 'created_at', 'updated_at'], 'integer'],
+            [['rbac_profile_id', 'rbac_controller_id', 'rule'], 'required'],
+            [['rbac_profile_id', 'rbac_controller_id', 'created_at', 'updated_at'], 'integer'],
             [['rule', 'name', 'description'], 'string', 'max' => 255],
-            [['controller_id', 'rule', 'name'], 'unique', 'targetAttribute' => ['controller_id', 'rule', 'name']],
-            [['controller_id'], 'exist', 'skipOnError' => true, 'targetClass' => RbacController::className(), 'targetAttribute' => ['controller_id' => 'id']],
+            [['rbac_profile_id', 'rbac_controller_id', 'rule'], 'unique', 'targetAttribute' => ['rbac_profile_id', 'rbac_controller_id', 'rule']],
+            [['rbac_profile_id', 'rbac_controller_id', 'name'], 'unique', 'targetAttribute' => ['rbac_profile_id', 'rbac_controller_id', 'name']],
+            [['rbac_profile_id', 'rbac_controller_id'], 'exist', 'skipOnError' => true, 'targetClass' => RbacProfileRbacController::className(), 'targetAttribute' => ['rbac_profile_id' => 'rbac_profile_id', 'rbac_controller_id' => 'rbac_controller_id']],
         ];
     }
 
@@ -66,7 +69,8 @@ class RbacFunctionality extends ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'controller_id' => Yii::t('app', 'Controller ID'),
+            'rbac_profile_id' => Yii::t('app', 'Rbac Profile ID'),
+            'rbac_controller_id' => Yii::t('app', 'Rbac Controller ID'),
             'rule' => Yii::t('app', 'Rule'),
             'name' => Yii::t('app', 'Name'),
             'description' => Yii::t('app', 'Description'),
@@ -76,23 +80,13 @@ class RbacFunctionality extends ActiveRecord
     }
 
     /**
-     * Gets query for [[Controller]].
-     *
-     * @return ActiveQuery|RbacControllerQuery
-     */
-    public function getController()
-    {
-        return $this->hasOne(RbacController::className(), ['id' => 'controller_id']);
-    }
-
-    /**
      * Gets query for [[RbacActions]].
      *
      * @return ActiveQuery|RbacActionQuery
      */
     public function getRbacActions()
     {
-        return $this->hasMany(RbacAction::className(), ['id' => 'rbac_action_id'])->viaTable('rbac_functionality_rbac_action', ['rbac_functionality_id' => 'id']);
+        return $this->hasMany(RbacAction::className(), ['id' => 'rbac_action_id'])->via('rbacFunctionalityRbacActions');
     }
 
     /**
@@ -106,23 +100,13 @@ class RbacFunctionality extends ActiveRecord
     }
 
     /**
-     * Gets query for [[RbacProfileRbacFunctionalities]].
+     * Gets query for [[RbacProfile]].
      *
-     * @return ActiveQuery|RbacProfileRbacFunctionalityQuery
+     * @return ActiveQuery|RbacProfileRbacControllerQuery
      */
-    public function getRbacProfileRbacFunctionalities()
+    public function getRbacProfileRbacController()
     {
-        return $this->hasMany(RbacProfileRbacFunctionality::className(), ['rbac_functionality_id' => 'id']);
-    }
-
-    /**
-     * Gets query for [[RbacProfiles]].
-     *
-     * @return ActiveQuery|RbacProfileQuery
-     */
-    public function getRbacProfiles()
-    {
-        return $this->hasMany(RbacProfile::className(), ['id' => 'rbac_profile_id'])->viaTable('rbac_profile_rbac_functionality', ['rbac_functionality_id' => 'id']);
+        return $this->hasOne(RbacProfileRbacController::className(), ['rbac_profile_id' => 'rbac_profile_id', 'rbac_controller_id' => 'rbac_controller_id']);
     }
 
     /**

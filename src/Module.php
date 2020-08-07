@@ -16,7 +16,7 @@ class Module extends ModuleBase implements BootstrapInterface
 {
     public $allowedIPs = ['127.0.0.1', '::1'];
 
-    /** @var \antonyz89\rbac\models\Controller[] */
+    /** @var RbacController[] */
     public $controllers = [];
 
     /**
@@ -25,9 +25,12 @@ class Module extends ModuleBase implements BootstrapInterface
     public function bootstrap($app)
     {
         $app->urlManager->addRules([
-            ['class' => 'yii\web\UrlRule', 'pattern' => $this->id, 'route' => "$this->id/default/index"],
-            ['class' => 'yii\web\UrlRule', 'pattern' => $this->id . '/<id:\w+>', 'route' => "$this->id/default/view"],
-            ['class' => 'yii\web\UrlRule', 'pattern' => $this->id . '/<controller:[\w\-]+>/<id:\d+>', 'route' => "$this->id/<controller>/<action>"],
+            ['class' => 'yii\web\UrlRule', 'pattern' => $this->id, 'route' => "$this->id/rbac-profile/index"],
+//            ['class' => 'yii\web\UrlRule', 'pattern' => $this->id . '/<id:\w+>', 'route' => "$this->id/default/view"],
+//            ['class' => 'yii\web\UrlRule', 'pattern' => $this->id . '/<controller:[\w\-]+>/<id:\d+>', 'route' => "$this->id/<controller>/<action>"],
+//            ['class' => 'yii\web\UrlRule', 'pattern' => $this->id . '/<controller:[\w\-]+>/<action:[\w\-]+>/<id:\d+>', 'route' => "$this->id/<controller>/<action>"],
+            ['class' => 'yii\web\UrlRule', 'pattern' => $this->id . '/<controller>/<action>', 'route' => "$this->id/<controller>/<action>"],
+            ['class' => 'yii\web\UrlRule', 'pattern' => $this->id . '/<controller>/<action:[\w\-]+>/<id:\d+>', 'route' => "$this->id/<controller>/<action>"],
         ], false);
     }
 
@@ -124,9 +127,7 @@ class Module extends ModuleBase implements BootstrapInterface
                 $controller = new RbacController();
                 $controller->application = $application;
                 $controller->name = $controller_id;
-                if (!$controller->save()) {
-                    dd($controller->errors);
-                }
+                $controller->save();
             }
 
             $this->insertActions($controller_id, $application, $actions);

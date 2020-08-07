@@ -2,6 +2,9 @@
 
 namespace antonyz89\rbac\models;
 
+use antonyz89\rbac\models\query\RbacControllerQuery;
+use antonyz89\rbac\models\query\RbacProfileQuery;
+use antonyz89\rbac\models\query\RbacProfileRbacControllerQuery;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
@@ -16,8 +19,8 @@ use yii\db\ActiveRecord;
  * @property int $created_at
  * @property int $updated_at
  *
- * @property RbacFunctionality[] $rbacFunctionalities
- * @property RbacProfileRbacFunctionality[] $rbacProfileRbacFunctionalities
+ * @property RbacController[] $rbacControllers
+ * @property RbacProfileRbacController[] $rbacProfileRbacControllers
  */
 class RbacProfile extends ActiveRecord
 {
@@ -68,23 +71,23 @@ class RbacProfile extends ActiveRecord
     }
 
     /**
-     * Gets query for [[RbacFunctionalities]].
+     * Gets query for [[RbacControllers]].
      *
-     * @return ActiveQuery|RbacFunctionalityQuery
+     * @return ActiveQuery|RbacControllerQuery
      */
-    public function getRbacFunctionalities()
+    public function getRbacControllers()
     {
-        return $this->hasMany(RbacFunctionality::className(), ['id' => 'rbac_functionality_id'])->viaTable('rbac_profile_rbac_functionality', ['rbac_profile_id' => 'id']);
+        return $this->hasMany(RbacController::className(), ['id' => 'rbac_controller_id'])->viaTable('rbac_profile_rbac_controller', ['rbac_profile_id' => 'id']);
     }
 
     /**
-     * Gets query for [[RbacProfileRbacFunctionalities]].
+     * Gets query for [[RbacProfileRbacControllers]].
      *
-     * @return ActiveQuery|RbacProfileRbacFunctionalityQuery
+     * @return ActiveQuery|RbacProfileRbacControllerQuery
      */
-    public function getRbacProfileRbacFunctionalities()
+    public function getRbacProfileRbacControllers()
     {
-        return $this->hasMany(RbacProfileRbacFunctionality::className(), ['rbac_profile_id' => 'id']);
+        return $this->hasMany(RbacProfileRbacController::className(), ['rbac_profile_id' => 'id'])->with('rbacController');
     }
 
     /**

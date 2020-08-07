@@ -2,35 +2,33 @@
 
 namespace antonyz89\rbac\models;
 
-use antonyz89\rbac\models\query\RbacActionQuery;
 use antonyz89\rbac\models\query\RbacControllerQuery;
 use antonyz89\rbac\models\query\RbacFunctionalityQuery;
-use antonyz89\rbac\models\query\RbacFunctionalityRbacActionQuery;
+use antonyz89\rbac\models\query\RbacProfileQuery;
+use antonyz89\rbac\models\query\RbacProfileRbacControllerQuery;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 
 /**
- * This is the model class for table "rbac_action".
+ * This is the model class for table "rbac_profile_rbac_controller".
  *
- * @property int $id
+ * @property int $rbac_profile_id
  * @property int $rbac_controller_id
- * @property string $name
  * @property int $created_at
- * @property int $updated_at
  *
  * @property RbacController $rbacController
  * @property RbacFunctionality[] $rbacFunctionalities
- * @property RbacFunctionalityRbacAction[] $rbacFunctionalityRbacActions
+ * @property RbacProfile $rbacProfile
  */
-class RbacAction extends \yii\db\ActiveRecord
+class RbacProfileRbacController extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'rbac_action';
+        return 'rbac_profile_rbac_controller';
     }
 
     /**
@@ -39,7 +37,10 @@ class RbacAction extends \yii\db\ActiveRecord
     public function behaviors()
     {
         return [
-            TimestampBehavior::class,
+            [
+                'class' => TimestampBehavior::class,
+                'updatedAtAttribute' => false
+            ]
         ];
     }
 
@@ -50,10 +51,11 @@ class RbacAction extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['rbac_controller_id', 'name', 'created_at', 'updated_at'], 'required'],
-            [['rbac_controller_id', 'created_at', 'updated_at'], 'integer'],
-            [['name'], 'string', 'max' => 255],
+            [['rbac_profile_id', 'rbac_controller_id'], 'required'],
+            [['rbac_profile_id', 'rbac_controller_id', 'created_at'], 'integer'],
+            [['rbac_profile_id', 'rbac_controller_id'], 'unique', 'targetAttribute' => ['rbac_profile_id', 'rbac_controller_id']],
             [['rbac_controller_id'], 'exist', 'skipOnError' => true, 'targetClass' => RbacController::className(), 'targetAttribute' => ['rbac_controller_id' => 'id']],
+            [['rbac_profile_id'], 'exist', 'skipOnError' => true, 'targetClass' => RbacProfile::className(), 'targetAttribute' => ['rbac_profile_id' => 'id']]
         ];
     }
 
@@ -63,11 +65,9 @@ class RbacAction extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
+            'rbac_profile_id' => Yii::t('app', 'Rbac Profile ID'),
             'rbac_controller_id' => Yii::t('app', 'Rbac Controller ID'),
-            'name' => Yii::t('app', 'Name'),
             'created_at' => Yii::t('app', 'Created At'),
-            'updated_at' => Yii::t('app', 'Updated At'),
         ];
     }
 
@@ -88,33 +88,25 @@ class RbacAction extends \yii\db\ActiveRecord
      */
     public function getRbacFunctionalities()
     {
-        return $this->hasMany(RbacFunctionality::className(), ['id' => 'rbac_functionality_id'])->via('rbacFunctionalityRbacActions');
+        return $this->hasMany(RbacFunctionality::className(), ['rbac_profile_id' => 'rbac_profile_id', 'rbac_controller_id' => 'rbac_controller_id']);
     }
 
     /**
-     * Gets query for [[RbacFunctionalityRbacActions]].
+     * Gets query for [[RbacProfile]].
      *
-     * @return ActiveQuery|RbacFunctionalityRbacActionQuery
+     * @return ActiveQuery|RbacProfileQuery
      */
-    public function getRbacFunctionalityRbacActions()
+    public function getRbacProfile()
     {
-        return $this->hasMany(RbacFunctionalityRbacAction::className(), ['rbac_action_id' => 'id']);
+        return $this->hasOne(RbacProfile::className(), ['id' => 'rbac_profile_id']);
     }
 
     /**
      * {@inheritdoc}
-     * @return RbacActionQuery the active query used by this AR class.
+     * @return RbacProfileRbacControllerQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new RbacActionQuery(get_called_class());
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->name;
+        return new RbacProfileRbacControllerQuery(get_called_class());
     }
 }

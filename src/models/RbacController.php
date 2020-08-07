@@ -2,10 +2,15 @@
 
 namespace antonyz89\rbac\models;
 
-use antonyz89\rbac\models\base\ActiveRecord;
+use antonyz89\rbac\models\query\RbacActionQuery;
+use antonyz89\rbac\models\query\RbacControllerQuery;
+use antonyz89\rbac\models\query\RbacFunctionalityQuery;
+use antonyz89\rbac\models\query\RbacProfileQuery;
+use antonyz89\rbac\models\query\RbacProfileRbacControllerQuery;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "rbac_controller".
@@ -16,8 +21,10 @@ use yii\db\ActiveQuery;
  * @property int $created_at
  * @property int $updated_at
  *
- * @property RbacAction[] $rbacActions
- * @property RbacFunctionality[] $rbacFunctionalities
+ * @property-read RbacAction[] $rbacActions
+ * @property-read RbacProfileRbacController[] $rbacProfileRbacControllers
+ * @property-read RbacFunctionality[] $rbacFunctionalities
+ * @property-read RbacProfile[] $rbacProfiles
  */
 class RbacController extends ActiveRecord
 {
@@ -78,13 +85,33 @@ class RbacController extends ActiveRecord
     }
 
     /**
+     * Gets query for [[RbacProfileRbacControllers]].
+     *
+     * @return ActiveQuery|RbacProfileRbacControllerQuery
+     */
+    public function getRbacProfileRbacControllers()
+    {
+        return $this->hasMany(RbacProfileRbacController::className(), ['rbac_controller_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[RbacProfiles]].
+     *
+     * @return ActiveQuery|RbacProfileQuery
+     */
+    public function getRbacProfiles()
+    {
+        return $this->hasMany(RbacProfile::className(), ['id' => 'rbac_profile_id'])->via('rbacProfileRbacControllers');
+    }
+
+    /**
      * Gets query for [[RbacFunctionalities]].
      *
      * @return ActiveQuery|RbacFunctionalityQuery
      */
     public function getRbacFunctionalities()
     {
-        return $this->hasMany(RbacFunctionality::className(), ['controller_id' => 'id']);
+        return $this->hasMany(RbacFunctionality::className(), ['rbac_profile_id' => 'rbac_profile_id', 'rbac_controller_id' => 'rbac_controller_id'])->via('rbacProfileRbacControllers');
     }
 
     /**
@@ -94,5 +121,13 @@ class RbacController extends ActiveRecord
     public static function find()
     {
         return new RbacControllerQuery(get_called_class());
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->name;
     }
 }

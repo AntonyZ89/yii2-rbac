@@ -2,6 +2,9 @@
 
 namespace antonyz89\rbac\models;
 
+use antonyz89\rbac\models\query\RbacActionQuery;
+use antonyz89\rbac\models\query\RbacFunctionalityQuery;
+use antonyz89\rbac\models\query\RbacFunctionalityRbacActionQuery;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
@@ -14,9 +17,8 @@ use yii\db\ActiveRecord;
  * @property int $rbac_action_id
  * @property int $created_at
  *
- * @property-read RbacAction $rbacAction
- * @property-read RbacController $rbacController
- * @property-read RbacFunctionality $rbacFunctionality
+ * @property RbacAction $rbacAction
+ * @property RbacFunctionality $rbacFunctionality
  */
 class RbacFunctionalityRbacAction extends ActiveRecord
 {
@@ -76,16 +78,6 @@ class RbacFunctionalityRbacAction extends ActiveRecord
     public function getRbacAction()
     {
         return $this->hasOne(RbacAction::className(), ['id' => 'rbac_action_id']);
-    }
-
-    /**
-     * Gets query for [[RbacController]].
-     *
-     * @return ActiveQuery|RbacControllerQuery
-     */
-    public function getRbacController()
-    {
-        return $this->hasOne(RbacController::className(), ['id' => 'controller_id'])->via('rbacFunctionality');
     }
 
     /**

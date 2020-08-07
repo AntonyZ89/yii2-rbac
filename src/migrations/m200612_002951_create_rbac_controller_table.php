@@ -5,7 +5,7 @@ use yii\db\Migration;
 /**
  * Handles the creation of table `{{%rbac_controller}}`.
  */
-class m200612_002952_create_rbac_controller_table extends Migration
+class m200612_002951_create_rbac_controller_table extends Migration
 {
     public const TABLE = '{{%rbac_controller}}';
 

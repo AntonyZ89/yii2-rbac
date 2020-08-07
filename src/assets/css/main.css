@@ -1,0 +1,31 @@
+/* general */
+
+.modal-header {
+    flex-direction: row-reverse;
+}
+
+.content-container {
+    min-height: 600px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+/* profile/_form */
+
+.controller, .functionality {
+    padding: 10px;
+    border: 1px solid black;
+    margin-bottom: 10px;
+}
+
+.btn-outline-secondary {
+    margin: 0 3px;
+}
+
+.btn-outline-danger {
+    padding: 0.25rem 0.6rem;
+}
+
+ol.actions > li {
+    margin-bottom: 2px;
+}

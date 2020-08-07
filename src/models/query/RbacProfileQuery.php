@@ -1,7 +1,8 @@
 <?php
 
-namespace antonyz89\rbac\models;
+namespace antonyz89\rbac\models\query;
 
+use antonyz89\rbac\models\RbacProfile;
 use yii\db\ActiveQuery;
 
 /**

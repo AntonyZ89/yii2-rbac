@@ -1,7 +1,8 @@
 <?php
 
-namespace antonyz89\rbac\models;
+namespace antonyz89\rbac\models\query;
 
+use antonyz89\rbac\models\RbacFunctionalityRbacAction;
 use yii\db\ActiveQuery;
 
 /**
@@ -11,6 +12,7 @@ use yii\db\ActiveQuery;
  */
 class RbacFunctionalityRbacActionQuery extends ActiveQuery
 {
+
     /**
      * {@inheritdoc}
      * @return RbacFunctionalityRbacAction[]|array

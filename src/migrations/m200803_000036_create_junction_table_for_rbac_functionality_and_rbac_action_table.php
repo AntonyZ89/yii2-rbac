@@ -19,13 +19,12 @@ class m200803_000036_create_junction_table_for_rbac_functionality_and_rbac_actio
     public function safeUp()
     {
         $this->createTable(self::TABLE, [
-            'rbac_functionality_id' => $this->integer()->notNull(),
-            'rbac_action_id' => $this->integer()->notNull(),
+            'rbac_functionality_id' => $this->integer(),
+            'rbac_action_id' => $this->integer(),
 
-            'created_at' => $this->integer()->notNull()
+            'created_at' => $this->integer()->notNull(),
+            'PRIMARY KEY(rbac_functionality_id, rbac_action_id)',
         ]);
-
-        $this->addPrimaryKey('pk-functionality_action-functionality_id-action_id', self::TABLE, ['rbac_functionality_id', 'rbac_action_id']);
 
         $this->createIndex('idx-rbac_functionality_rbac_action-rbac_functionality_id', self::TABLE, 'rbac_functionality_id');
         $this->addForeignKey('fk-rbac_functionality_rbac_action-rbac_functionality_id', self::TABLE, 'rbac_functionality_id', '{{%rbac_functionality}}', 'id', 'CASCADE', 'CASCADE');

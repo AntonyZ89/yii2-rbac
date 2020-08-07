@@ -23,7 +23,7 @@ use yii\widgets\ActiveForm;
             'options' => ['placeholder' => 'Select'],
             'pluginOptions' => [
                 'ajax' => [
-                    'url' => Url::toRoute(['default/search-action', 'functionality_id' => $model->rbac_functionality_id]),
+                    'url' => Url::toRoute(['rbac-action/search', 'functionality_id' => $model->rbac_functionality_id]),
                     'dataType' => 'json'
                 ],
             ],

@@ -17,10 +17,10 @@ use yii\widgets\ActiveForm;
     <div class="box-body">
         <div class="row">
             <div class="col-md-6">
-                <?= $form->field($model, 'rule') ?>
+                <?= $form->field($model, 'name') ?>
             </div>
             <div class="col-md-6">
-                <?= $form->field($model, 'name') ?>
+                <?= $form->field($model, 'rule') ?>
             </div>
             <div class="col-md-12">
                 <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
