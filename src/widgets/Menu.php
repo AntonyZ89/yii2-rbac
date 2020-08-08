@@ -3,6 +3,7 @@
 namespace antonyz89\rbac\widgets;
 
 use antonyz89\rbac\components\AccessRule;
+use antonyz89\rbac\models\RbacController;
 use dmstr\widgets\Menu as MenuBase;
 use Yii;
 use yii\helpers\ArrayHelper;
@@ -52,18 +53,40 @@ class Menu extends MenuBase
         return strtr($template, $replacements);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected function normalizeItems($items, &$active)
     {
         foreach ($items as $i => $item) {
-            if (isset($item['roles'])) {
-                $access_rule = new AccessRule();
-                $access_rule->roles = $item['roles'];
+            $user = Yii::$app->user;
+            $remove = false;
+            $url = null;
+            $roles = null;
 
-                $logged_user = Yii::$app->user;
-                if (!$access_rule->matchRole($logged_user)) {
-                    unset($items[$i]);
-                    continue;
-                }
+            if (isset($item['url'])) {
+                $url = is_array($item['url']) ? $item['url'][0] : $item['url'];
+                $url = explode('/', $url);
+                $controller = $url[0];
+                $action = $url[1] ?? null;
+            }
+
+            if (isset($item['roles'])) {
+                $roles = is_array($item['roles']) ? $item['roles'] : [$item['roles']];
+            }
+
+            if ($roles && $user->isGuest && in_array('@', $item['roles'], true)) {
+                $remove = true;
+            } else if ($roles && !$user->isGuest && in_array('?', $item['roles'], true)) {
+                $remove = true;
+            } else if ($url && ($controller = RbacController::find()->whereName($controller)->whereApplication(Yii::$app->id)->one())) {
+                $user = $user->identity;
+                $action = $controller->getRbacActions()->whereName($action)->one();
+                $remove = !AccessRule::have($user, $controller->name, $action ? $action->name : null);
+            }
+
+            if ($remove) {
+                unset($items[$i]);
             }
         }
 

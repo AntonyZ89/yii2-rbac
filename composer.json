@@ -1,18 +1,17 @@
 {
-    "name": "antonyz89/yii2-rbac-v2",
-    "description": "A simple and different RBAC for Yii2 Framework",
+    "name": "antonyz89/yii2-rbac",
+    "description": "RBAC for Yii2 Framework",
     "keywords": [
         "antonyz89",
         "yii2",
-        "extension",
-        "widget",
+        "rule",
         "rbac"
     ],
     "type": "yii2-extension",
     "license": "BSD-3-Clause",
     "support": {
-        "issues": "https://github.com/antonyz89/yii2-rbac-v2/issues",
-        "source": "https://github.com/antonyz89/yii2-rbac-v2"
+        "issues": "https://github.com/antonyz89/yii2-rbac/issues",
+        "source": "https://github.com/antonyz89/yii2-rbac"
     },
     "authors": [
         {
@@ -26,7 +25,8 @@
         "yiisoft/yii2-bootstrap4": "^2.0",
         "antonyz89/yii2-many-to-many": "^0.3",
         "rawr/t-regx": "^0.9",
-        "kartik-v/yii2-widget-select2": "^2.1.0"
+        "kartik-v/yii2-widget-select2": "^2.1.0",
+        "kartik-v/yii2-grid": "^3.2"
     },
     "autoload": {
         "psr-4": {

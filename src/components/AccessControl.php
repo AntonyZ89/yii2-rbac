@@ -2,7 +2,6 @@
 
 namespace antonyz89\rbac\components;
 
-use common\controllers\Controller;
 use Yii;
 use yii\filters\AccessControl as AccessControlBase;
 use yii\web\ForbiddenHttpException;
@@ -10,9 +9,7 @@ use yii\web\User;
 
 /**
  * Class AccessControl
- * @package common\components
- *
- * @property Controller $owner
+ * @package antonyz89\rbac\components
  */
 class AccessControl extends AccessControlBase
 {

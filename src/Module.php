@@ -138,7 +138,11 @@ class Module extends ModuleBase implements BootstrapInterface
 
     public function insertActions($controller_id, $application, $actions_id): void
     {
-        $controller = RbacController::find()->with('rbacActions')->whereName($controller_id)->whereApplication($application)->one();
+        $controller = RbacController::find()
+            ->with('rbacActions')
+            ->whereName($controller_id)
+            ->whereApplication($application)
+            ->one();
 
         $rbacActions = array_map(static function ($value) {
             return $value->name;

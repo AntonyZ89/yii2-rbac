@@ -1,8 +1,8 @@
-yii2-rbac-v2 change Log
+yii2-rbac change Log
 ===========================
 
-version 1.0.0
+version 0.1
 -------------
-**Date:** 03-August-2020
+**Date:** 08-August-2020  02:47 GMT-3
 
 Initial release

@@ -64,8 +64,8 @@ class RbacFunctionalityRbacAction extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'rbac_functionality_id' => Yii::t('app', 'Rbac Functionality ID'),
-            'rbac_action_id' => Yii::t('app', 'Rbac Action ID'),
+            'rbac_functionality_id' => Yii::t('app', 'Functionality'),
+            'rbac_action_id' => Yii::t('app', 'Action'),
             'created_at' => Yii::t('app', 'Created At'),
         ];
     }

@@ -1,8 +1,9 @@
 <?php
 
 use antonyz89\rbac\models\search\RbacProfileSearch;
+use kartik\grid\ActionColumn;
+use kartik\grid\GridView;
 use yii\data\ActiveDataProvider;
-use yii\grid\GridView;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\web\View;
@@ -36,13 +37,22 @@ $columns = [
 
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
-            'summary' => false,
+            'layout' => "{items}\n{summary}\n{pager}",
             'columns' => ArrayHelper::merge($columns, [
                 [
-                    'class' => '\yii\grid\ActionColumn',
-                    'visibleButtons' => ['view' => false]
+                    'class' => ActionColumn::class,
+                    'visibleButtons' => ['view' => false],
+                    'width' => '100px',
+                    'updateOptions' => [
+                        'class' => 'btn btn-sm btn-outline-primary',
+                        'icon' => '<i class="fas fa-pencil-alt"></i>'
+                    ],
+                    'deleteOptions' => [
+                        'class' => 'btn btn-sm btn-outline-danger',
+                        'icon' => '<i class="fas fa-times"></i>'
+                    ]
                 ]
-            ])
+            ]),
         ]); ?>
 
     </div>

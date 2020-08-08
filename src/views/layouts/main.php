@@ -34,14 +34,14 @@ RbacAsset::register($this);
             ],
         ]);
 
-        echo Nav::widget([
+        /*Nav::widget([
             'options' => ['class' => 'navbar-nav navbar-right'],
             'items' => [
                 ['label' => 'Home', 'url' => ['/site/index']],
                 ['label' => 'About', 'url' => ['/site/about']],
                 ['label' => 'Contact', 'url' => ['/site/contact']],
             ],
-        ]);
+        ]);*/
         NavBar::end();
         ?>
 
@@ -54,7 +54,7 @@ RbacAsset::register($this);
         <div class="container">
             <div class="row">
                 <div class="col-6">
-                    <p>A Product of <a href="http://www.yiisoft.com/">Yii Software LLC</a></p>
+                    <p>By <a href="http://github.com/AntonyZ89/">AntonyZ89</a></p>
                 </div>
                 <div class="col-6">
                     <p class="text-right"><?= Yii::powered() ?></p>

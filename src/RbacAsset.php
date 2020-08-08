@@ -5,7 +5,7 @@ namespace antonyz89\rbac;
 use yii\web\AssetBundle;
 
 /**
- * This declares the asset files required by Rbac V2 .
+ * This declares the asset files required by RBAC.
  *
  * @author Antony Gabriel <antonyz.dev@gmail.com>
  * @since 1.0

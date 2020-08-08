@@ -4,6 +4,11 @@
 namespace common\components;
 
 
+/**
+ * Trait Have
+ * @package common\components
+ * @deprecated 
+ */
 trait Have
 {
     /**

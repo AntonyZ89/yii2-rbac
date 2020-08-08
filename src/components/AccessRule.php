@@ -2,6 +2,12 @@
 
 namespace antonyz89\rbac\components;
 
+use antonyz89\rbac\models\query\RbacActionQuery;
+use antonyz89\rbac\models\query\RbacControllerQuery;
+use antonyz89\rbac\models\query\RbacFunctionalityQuery;
+use antonyz89\rbac\models\query\RbacProfileQuery;
+use antonyz89\rbac\models\query\RbacProfileRbacControllerQuery;
+use Yii;
 use yii\base\InvalidConfigException;
 use yii\filters\AccessRule as AccessRuleBase;
 use yii\web\User;
@@ -29,40 +35,41 @@ class AccessRule extends AccessRuleBase
             throw new InvalidConfigException('The user application component must be available to specify roles in AccessRule.');
         }
 
-        /** @var \common\models\user\User $_user */
         $_user = $user->identity;
         $can = true;
 
         foreach ($items as $item) {
-            if (is_array($item)) {
-                $can &= self::recursive($item, $_user);
-            } else {
-                switch ($item) {
-                    case '?':
-                        if (!$user->isGuest) {
-                            return false;
-                        }
-                        break;
-                    case '@':
-                        if ($user->isGuest) {
-                            return false;
-                        }
-                        break;
-                    default:
-                        $can &= $_user->have($item);
-                }
+//            if (is_array($item)) {
+//                $can &= self::recursive($item, $_user);
+//            } else {
+            switch ($item) {
+                case '?':
+                    if (!$user->isGuest) {
+                        return false;
+                    }
+                    break;
+                case '@':
+                    if ($user->isGuest) {
+                        return false;
+                    }
+                    break;
             }
+
+            $can &= self::have($_user, Yii::$app->controller->id, Yii::$app->controller->action->id);
+//            }
         }
 
         return $can;
     }
 
+
     /**
      * @param $item array
-     * @param $_user \common\models\user\User
+     * @param $_user
      * @return bool|mixed
+     * @deprecated
      */
-    protected static function recursive($item, $_user)
+    /*protected static function recursive($item, $_user)
     {
         $_can = true;
         $condition = array_shift($item); // AND, OR
@@ -85,6 +92,42 @@ class AccessRule extends AccessRuleBase
         }
 
         return $_can;
+    }*/
+
+    /**
+     * Search profile for current controller/action
+     *
+     * @param $user
+     * @param string $controller_id
+     * @param string|null $action_id
+     * @return bool
+     */
+    public static function have($user, $controller_id, $action_id = null)
+    {
+        /** @var RbacProfileQuery $profile */
+        $profile = $user->getRbacProfile()->joinWith([
+            'rbacProfileRbacControllers' => static function (RbacProfileRbacControllerQuery $query) use ($action_id, $controller_id) {
+                $query->joinWith([
+                    'rbacController' => static function (RbacControllerQuery $query) use ($controller_id) {
+                        $query->whereName($controller_id);
+                    },
+                ]);
+
+                if ($action_id) {
+                    $query->joinWith([
+                        'rbacFunctionalities' => static function (RbacFunctionalityQuery $query) use ($action_id) {
+                            $query->joinWith([
+                                'rbacActions' => static function (RbacActionQuery $query) use ($action_id) {
+                                    $query->whereName($action_id);
+                                }
+                            ]);
+                        }
+                    ]);
+                }
+            }
+        ]);
+
+        return $profile->exists();
     }
 
 }

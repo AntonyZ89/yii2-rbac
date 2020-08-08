@@ -65,8 +65,8 @@ class RbacProfileRbacController extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'rbac_profile_id' => Yii::t('app', 'Rbac Profile ID'),
-            'rbac_controller_id' => Yii::t('app', 'Rbac Controller ID'),
+            'rbac_profile_id' => Yii::t('app', 'Profile'),
+            'rbac_controller_id' => Yii::t('app', 'Controller'),
             'created_at' => Yii::t('app', 'Created At'),
         ];
     }

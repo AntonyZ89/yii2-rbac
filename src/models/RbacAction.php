@@ -50,7 +50,7 @@ class RbacAction extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['rbac_controller_id', 'name', 'created_at', 'updated_at'], 'required'],
+            [['rbac_controller_id', 'name'], 'required'],
             [['rbac_controller_id', 'created_at', 'updated_at'], 'integer'],
             [['name'], 'string', 'max' => 255],
             [['rbac_controller_id'], 'exist', 'skipOnError' => true, 'targetClass' => RbacController::className(), 'targetAttribute' => ['rbac_controller_id' => 'id']],
@@ -64,7 +64,7 @@ class RbacAction extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'rbac_controller_id' => Yii::t('app', 'Rbac Controller ID'),
+            'rbac_controller_id' => Yii::t('app', 'Controller'),
             'name' => Yii::t('app', 'Name'),
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),

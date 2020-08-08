@@ -69,8 +69,8 @@ class RbacFunctionality extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'rbac_profile_id' => Yii::t('app', 'Rbac Profile ID'),
-            'rbac_controller_id' => Yii::t('app', 'Rbac Controller ID'),
+            'rbac_profile_id' => Yii::t('app', 'Profile'),
+            'rbac_controller_id' => Yii::t('app', 'Controller'),
             'rule' => Yii::t('app', 'Rule'),
             'name' => Yii::t('app', 'Name'),
             'description' => Yii::t('app', 'Description'),
