@@ -26,7 +26,8 @@
         "antonyz89/yii2-many-to-many": "^0.3",
         "rawr/t-regx": "^0.9",
         "kartik-v/yii2-widget-select2": "^2.1.0",
-        "kartik-v/yii2-grid": "^3.2"
+        "kartik-v/yii2-grid": "^3.2",
+        "symfony/polyfill-php80": "^1.18"
     },
     "autoload": {
         "psr-4": {

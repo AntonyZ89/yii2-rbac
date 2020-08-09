@@ -16,19 +16,16 @@ class Module extends ModuleBase implements BootstrapInterface
 {
     public $allowedIPs = ['127.0.0.1', '::1'];
 
-    /** @var RbacController[] */
-    public $controllers = [];
+    /** @var string[][] */
+    protected $controllers = [];
 
     /**
      * {@inheritdoc}
      */
-    public function bootstrap($app)
+    public function bootstrap($app): void
     {
         $app->urlManager->addRules([
             ['class' => 'yii\web\UrlRule', 'pattern' => $this->id, 'route' => "$this->id/rbac-profile/index"],
-//            ['class' => 'yii\web\UrlRule', 'pattern' => $this->id . '/<id:\w+>', 'route' => "$this->id/default/view"],
-//            ['class' => 'yii\web\UrlRule', 'pattern' => $this->id . '/<controller:[\w\-]+>/<id:\d+>', 'route' => "$this->id/<controller>/<action>"],
-//            ['class' => 'yii\web\UrlRule', 'pattern' => $this->id . '/<controller:[\w\-]+>/<action:[\w\-]+>/<id:\d+>', 'route' => "$this->id/<controller>/<action>"],
             ['class' => 'yii\web\UrlRule', 'pattern' => $this->id . '/<controller>/<action>', 'route' => "$this->id/<controller>/<action>"],
             ['class' => 'yii\web\UrlRule', 'pattern' => $this->id . '/<controller>/<action:[\w\-]+>/<id:\d+>', 'route' => "$this->id/<controller>/<action>"],
         ], false);
@@ -37,7 +34,7 @@ class Module extends ModuleBase implements BootstrapInterface
 
     /**
      * {@inheritdoc}
-     * @throws ForbiddenHttpException|InvalidConfigException
+     * @throws ForbiddenHttpException
      */
     public function beforeAction($action): bool
     {
@@ -49,7 +46,14 @@ class Module extends ModuleBase implements BootstrapInterface
             throw new ForbiddenHttpException('You are not allowed to access this page.');
         }
 
-        $this->loadControllers();
+        if ($action->controller->id === 'rbac-profile' && $action->id === 'update') {
+            foreach (Yii::$aliases as $alias => $path) {
+                $controller_path = Yii::getAlias("$alias/controllers", false);
+                if ($controller_path && !in_array($alias, ['@console', '@app']) && file_exists($controller_path)) {
+                    $this->loadControllers(str_replace('@', '', $alias));
+                }
+            }
+        }
 
         return true;
     }
@@ -74,23 +78,25 @@ class Module extends ModuleBase implements BootstrapInterface
 
     /**
      * Load controllers and actions of current module
-     * @throws InvalidConfigException
+     * @param string $application
      */
-    public function loadControllers(): void
+    public function loadControllers(string $application): void
     {
         $controllers_id = array_map(static function ($value) {
             if (Pattern::of('^\w+Controller\.php$')->test($value)) {
                 return Inflector::camel2id(str_replace('Controller.php', '', $value));
             }
             return null;
-        }, scandir(Yii::$app->controllerPath));
+        }, scandir(Yii::getAlias("@$application/controllers")));
 
         $controllers_id = array_filter($controllers_id, static function ($value) {
             return $value;
         });
 
         foreach ($controllers_id as $controller_id) {
-            $controller = Yii::$app->createControllerByID($controller_id);
+            $className = "$application\\controllers\\" . Inflector::id2camel($controller_id) . 'Controller';
+            $controller = new $className($controller_id, $this);
+
             $actions = array_keys($controller->actions());
             $function_action = array_map(static function ($value) {
                 if ($value !== 'actions' && str_starts_with($value, 'action')) {
@@ -109,16 +115,17 @@ class Module extends ModuleBase implements BootstrapInterface
             $this->controllers[$controller_id] = $actions;
         }
 
-        $this->insertControllers();
+        $this->insertControllers($application);
     }
 
-    public function insertControllers(): void
+    /**
+     * @param string $application
+     */
+    public function insertControllers(string $application): void
     {
-        $application = Yii::$app->id;
-
         $db_controllers = array_map(static function ($value) {
             return $value->name;
-        }, RbacController::find()->all());
+        }, RbacController::find()->whereApplication($application)->all());
 
         $not_inserted_ids = array_diff(array_keys($this->controllers), $db_controllers);
 
@@ -133,10 +140,15 @@ class Module extends ModuleBase implements BootstrapInterface
             $this->insertActions($controller_id, $application, $actions);
         }
 
-        $this->instanceControllers();
+        $this->controllers = [];
     }
 
-    public function insertActions($controller_id, $application, $actions_id): void
+    /**
+     * @param string $controller_id
+     * @param string $application
+     * @param string[] $actions_id
+     */
+    public function insertActions(string $controller_id, string $application, array $actions_id): void
     {
         $controller = RbacController::find()
             ->with('rbacActions')
@@ -150,28 +162,11 @@ class Module extends ModuleBase implements BootstrapInterface
 
         $not_inserted_actions = array_diff($actions_id, $rbacActions);
 
-        foreach ($actions_id as $action_id) {
-            if (in_array($action_id, $not_inserted_actions, true)) {
-                $rbacAction = new RbacAction();
-                $rbacAction->rbac_controller_id = $controller->id;
-                $rbacAction->name = $action_id;
-                $rbacAction->save();
-
-            }
+        foreach ($not_inserted_actions as $action_id) {
+            $rbacAction = new RbacAction();
+            $rbacAction->rbac_controller_id = $controller->id;
+            $rbacAction->name = $action_id;
+            $rbacAction->save();
         }
-    }
-
-    public function instanceControllers()
-    {
-        $_controllers = [];
-
-        foreach ($this->controllers as $id => $actions) {
-            $_controllers[] = RbacController::find()
-                ->with('rbacActions', 'rbacBlocks')
-                ->whereName($id)
-                ->one();
-        }
-
-        $this->controllers = $_controllers;
     }
 }

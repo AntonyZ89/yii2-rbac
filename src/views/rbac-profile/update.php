@@ -40,63 +40,66 @@ $this->params['breadcrumbs'][] = 'Update';
                 <?php $rbacController = $controller->rbacController ?>
                 <div class="col-md-4">
                     <div class="controller">
-                        <div>
-                            <h4 class="float-left"><?= $rbacController->name ?></h4>
-                            <div class="float-right">
-                                <?= Html::a('<i class="fas fa-plus"></i>', ['rbac-block/create', 'profile_id' => $controller->rbac_profile_id, 'controller_id' => $controller->rbac_controller_id], [
-                                    'class' => 'btn btn-sm btn-outline-primary show-modal',
-                                    'data' => [
-                                        'header' => 'Block',
-                                        'target' => '#modal'
-                                    ]
-                                ]) ?>
-                                <?= Html::a('<i class="fas fa-pencil-alt"></i>', ['rbac-profile-rbac-controller/update', 'rbac_profile_id' => $controller->rbac_profile_id, 'rbac_controller_id' => $controller->rbac_controller_id], [
-                                    'class' => 'btn btn-sm btn-outline-secondary show-modal',
-                                    'data' => [
-                                        'header' => 'Action',
-                                        'target' => '#modal'
-                                    ]
-                                ]) ?>
-                                <?= Html::a('<i class="fas fa-times"></i>', ['rbac-profile-rbac-controller/delete', 'id' => $rbacController->id], [
-                                    'class' => 'btn btn-sm btn-outline-danger show-modal',
-                                    'data' => [
-                                        'header' => 'Action',
-                                        'target' => '#modal'
-                                    ]
-                                ]) ?>
+                        <div class="clearfix">
+                            <div class="clearfix">
+                                <h4 class="float-left"><?= $rbacController->name ?></h4>
+                                <div class="float-right">
+                                    <?= Html::a('<i class="fas fa-plus"></i>', ['rbac-block/create', 'profile_id' => $controller->rbac_profile_id, 'controller_id' => $controller->rbac_controller_id], [
+                                        'class' => 'btn btn-sm btn-outline-primary show-modal',
+                                        'data' => [
+                                            'header' => 'Block',
+                                            'target' => '#modal'
+                                        ]
+                                    ]) ?>
+                                    <?= Html::a('<i class="fas fa-pencil-alt"></i>', ['rbac-profile-rbac-controller/update', 'rbac_profile_id' => $controller->rbac_profile_id, 'rbac_controller_id' => $controller->rbac_controller_id], [
+                                        'class' => 'btn btn-sm btn-outline-secondary show-modal',
+                                        'data' => [
+                                            'header' => 'Action',
+                                            'target' => '#modal'
+                                        ]
+                                    ]) ?>
+                                    <?= Html::a('<i class="fas fa-times"></i>', ['rbac-profile-rbac-controller/delete', 'id' => $rbacController->id], [
+                                        'class' => 'btn btn-sm btn-outline-danger show-modal',
+                                        'data' => [
+                                            'header' => 'Action',
+                                            'target' => '#modal'
+                                        ]
+                                    ]) ?>
+                                </div>
                             </div>
-                            <div class="clearfix"></div>
+                            <h4 class="float-left text-muted">(<?= $rbacController->application ?>)</h4>
                         </div>
 
                         <?php foreach ($controller->rbacBlocks as $rbacBlock): ?>
                             <div class="block">
-                                <div>
-                                    <h4 class="float-left"><?= $rbacBlock->name ?></h4>
-                                    <div class="float-right">
-                                        <?= Html::a('<i class="fas fa-plus"></i>', ['rbac-block-rbac-action/create', 'block_id' => $rbacBlock->id], [
-                                            'class' => 'btn btn-sm btn-outline-success show-modal',
-                                            'data' => [
-                                                'header' => 'Action',
-                                                'target' => '#modal'
-                                            ]
-                                        ]) ?>
-                                        <?= Html::a('<i class="fas fa-pencil-alt"></i>', ['rbac-block/update', 'id' => $rbacBlock->id], [
-                                            'class' => 'btn btn-sm btn-outline-secondary show-modal',
-                                            'data' => [
-                                                'header' => 'Action',
-                                                'target' => '#modal'
-                                            ]
-                                        ]) ?>
-                                        <?= Html::a('<i class="fas fa-times"></i>', ['rbac-block/delete', 'id' => $rbacBlock->id], [
-                                            'class' => 'btn btn-sm btn-outline-danger show-modal',
-                                            'data' => [
-                                                'header' => 'Action',
-                                                'target' => '#modal'
-                                            ]
-                                        ]) ?>
+                                <div class="clearfix">
+                                    <div class="clearfix">
+                                        <h4 class="float-left"><?= $rbacBlock->name ?></h4>
+                                        <div class="float-right">
+                                            <?= Html::a('<i class="fas fa-plus"></i>', ['rbac-block-rbac-action/create', 'block_id' => $rbacBlock->id], [
+                                                'class' => 'btn btn-sm btn-outline-success show-modal',
+                                                'data' => [
+                                                    'header' => 'Action',
+                                                    'target' => '#modal'
+                                                ]
+                                            ]) ?>
+                                            <?= Html::a('<i class="fas fa-pencil-alt"></i>', ['rbac-block/update', 'id' => $rbacBlock->id], [
+                                                'class' => 'btn btn-sm btn-outline-secondary show-modal',
+                                                'data' => [
+                                                    'header' => 'Action',
+                                                    'target' => '#modal'
+                                                ]
+                                            ]) ?>
+                                            <?= Html::a('<i class="fas fa-times"></i>', ['rbac-block/delete', 'id' => $rbacBlock->id], [
+                                                'class' => 'btn btn-sm btn-outline-danger show-modal',
+                                                'data' => [
+                                                    'header' => 'Action',
+                                                    'target' => '#modal'
+                                                ]
+                                            ]) ?>
+                                        </div>
                                     </div>
-                                    <h4 class="float-left">(<?= $rbacBlock->rule ?>)</h4>
-                                    <div class="clearfix"></div>
+                                    <h4 class="float-left text-muted">(<?= $rbacBlock->rule ?>)</h4>
                                 </div>
 
                                 <p><?= $rbacBlock->description ?></p>
