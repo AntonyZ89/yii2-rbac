@@ -1,17 +1,17 @@
 <?php
 
-use antonyz89\rbac\models\RbacFunctionality;
+use antonyz89\rbac\models\RbacProfileRbacController;
 use yii\web\View;
 
 /**
  * @var $this View
- * @var $model RbacFunctionality
+ * @var $model RbacProfileRbacController
  */
 
-$this->title = 'Update Functionality'
+$this->title = 'Update Controller'
 ?>
 
-<div class="functionality-update">
+<div class="rbac-profile-rbac-controller-update">
     <?= $this->render('_form', [
         'model' => $model
     ]) ?>

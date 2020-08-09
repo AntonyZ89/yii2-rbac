@@ -1,17 +1,17 @@
 <?php
 
-use antonyz89\rbac\models\RbacFunctionality;
+use antonyz89\rbac\models\RbacBlockRbacAction;
 use yii\web\View;
 
 /**
  * @var $this View
- * @var $model RbacFunctionality
+ * @var $model RbacBlockRbacAction
  */
 
 $this->title = 'Create Action'
 ?>
 
-<div class="functionality-create">
+<div class="rbac-block-rbac-action-create">
     <?= $this->render('_form', [
         'model' => $model
     ]) ?>

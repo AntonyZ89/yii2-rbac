@@ -6,8 +6,8 @@ namespace antonyz89\rbac\controllers;
 use antonyz89\rbac\controllers\base\Controller;
 use antonyz89\rbac\models\RbacAction;
 use antonyz89\rbac\models\RbacController;
-use antonyz89\rbac\models\RbacFunctionality;
-use antonyz89\rbac\models\RbacFunctionalityRbacAction;
+use antonyz89\rbac\models\RbacBlock;
+use antonyz89\rbac\models\RbacBlockRbacAction;
 use antonyz89\rbac\models\RbacProfile;
 use antonyz89\rbac\models\RbacProfileRbacController;
 use Yii;
@@ -47,8 +47,8 @@ class GeneratorController extends Controller
             'rbac_data' => [
                 $this->getData(RbacAction::class),
                 $this->getData(RbacController::class),
-                $this->getData(RbacFunctionality::class),
-                $this->getData(RbacFunctionalityRbacAction::class),
+                $this->getData(RbacBlock::class),
+                $this->getData(RbacBlockRbacAction::class),
                 $this->getData(RbacProfile::class),
                 $this->getData(RbacProfileRbacController::class),
             ]

@@ -4,8 +4,8 @@ namespace antonyz89\rbac\controllers;
 
 use antonyz89\rbac\controllers\base\Controller;
 use antonyz89\rbac\models\RbacAction;
-use antonyz89\rbac\models\RbacFunctionality;
-use antonyz89\rbac\models\RbacFunctionalityRbacAction;
+use antonyz89\rbac\models\RbacBlock;
+use antonyz89\rbac\models\RbacBlockRbacAction;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
@@ -21,23 +21,23 @@ use yii\web\Response;
 class RbacActionController extends Controller
 {
     /**
-     * @param integer $functionality_id
+     * @param integer $block_id
      * @param string|null $q
      * @return array
      * @throws NotFoundHttpException
      */
-    public function actionSearch($functionality_id, $q = null)
+    public function actionSearch($block_id, $q = null)
     {
         Yii::$app->response->format = Response::FORMAT_JSON;
 
-        $rbacFunctionality = self::findFunctionalityModel($functionality_id);
+        $rbacBlock = self::findBlockModel($block_id);
 
-        $action_ids = RbacFunctionalityRbacAction::find()
+        $action_ids = RbacBlockRbacAction::find()
             ->select('rbac_action_id')
-            ->whereRbacFunctionality($functionality_id);
+            ->whereRbacBlock($block_id);
 
         $query = RbacAction::find()
-            ->whereRbacController($rbacFunctionality->rbac_controller_id)
+            ->whereRbacController($rbacBlock->rbac_controller_id)
             ->whereId($action_ids, 'NOT IN');
 
         if ($q) {
@@ -56,12 +56,12 @@ class RbacActionController extends Controller
 
     /**
      * @param integer $id
-     * @return RbacFunctionality
+     * @return RbacBlock
      * @throws NotFoundHttpException
      */
-    public static function findFunctionalityModel($id)
+    public static function findBlockModel($id)
     {
-        if (($model = RbacFunctionality::findOne($id)) !== null) {
+        if (($model = RbacBlock::findOne($id)) !== null) {
             return $model;
         }
 

@@ -1,18 +1,18 @@
 <?php
 
-use antonyz89\rbac\models\RbacFunctionality;
+use antonyz89\rbac\models\RbacBlock;
 use yii\helpers\Html;
 use yii\web\View;
 use yii\widgets\ActiveForm;
 
 /**
  * @var $this View
- * @var $model RbacFunctionality
+ * @var $model RbacBlock
  */
 
 ?>
 
-<div class="rbac-functionality-form box box-primary">
+<div class="rbac-block-form box box-primary">
     <?php $form = ActiveForm::begin(); ?>
     <div class="box-body">
         <div class="row">

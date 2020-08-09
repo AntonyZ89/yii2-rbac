@@ -4,7 +4,7 @@ namespace antonyz89\rbac\models;
 
 use antonyz89\rbac\models\query\RbacActionQuery;
 use antonyz89\rbac\models\query\RbacControllerQuery;
-use antonyz89\rbac\models\query\RbacFunctionalityQuery;
+use antonyz89\rbac\models\query\RbacBlockQuery;
 use antonyz89\rbac\models\query\RbacProfileQuery;
 use antonyz89\rbac\models\query\RbacProfileRbacControllerQuery;
 use Yii;
@@ -26,7 +26,7 @@ use yii\db\ActiveRecord;
  *
  * @property-read RbacAction[] $rbacActions
  * @property-read RbacProfileRbacController[] $rbacProfileRbacControllers
- * @property-read RbacFunctionality[] $rbacFunctionalities
+ * @property-read RbacBlock[] $rbacBlocks
  * @property-read RbacProfile[] $rbacProfiles
  */
 class RbacController extends ActiveRecord
@@ -108,13 +108,13 @@ class RbacController extends ActiveRecord
     }
 
     /**
-     * Gets query for [[RbacFunctionalities]].
+     * Gets query for [[RbacBlocks]].
      *
-     * @return ActiveQuery|RbacFunctionalityQuery
+     * @return ActiveQuery|RbacBlockQuery
      */
-    public function getRbacFunctionalities()
+    public function getRbacBlocks()
     {
-        return $this->hasMany(RbacFunctionality::className(), ['rbac_profile_id' => 'rbac_profile_id', 'rbac_controller_id' => 'rbac_controller_id'])->via('rbacProfileRbacControllers');
+        return $this->hasMany(RbacBlock::className(), ['rbac_profile_id' => 'rbac_profile_id', 'rbac_controller_id' => 'rbac_controller_id'])->via('rbacProfileRbacControllers');
     }
 
     /**

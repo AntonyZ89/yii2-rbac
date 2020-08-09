@@ -12,14 +12,14 @@
 
 /* profile/_form */
 
-.controller, .functionality {
+.controller, .block {
     padding: 10px;
     border: 1px solid black;
     border-radius: 5px;
     margin-bottom: 10px;
 }
 
-.functionality:last-child {
+.block:last-child {
     margin-bottom: 0;
 }
 

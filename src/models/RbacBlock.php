@@ -3,15 +3,15 @@
 namespace antonyz89\rbac\models;
 
 use antonyz89\rbac\models\query\RbacActionQuery;
-use antonyz89\rbac\models\query\RbacFunctionalityQuery;
-use antonyz89\rbac\models\query\RbacFunctionalityRbacActionQuery;
+use antonyz89\rbac\models\query\RbacBlockQuery;
+use antonyz89\rbac\models\query\RbacBlockRbacActionQuery;
 use antonyz89\rbac\models\query\RbacProfileRbacControllerQuery;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 
 /**
- * This is the model class for table "rbac_functionality".
+ * This is the model class for table "rbac_block".
  *
  * @author Antony Gabriel <antonyz.dev@gmail.com>
  * @since 0.1
@@ -26,17 +26,17 @@ use yii\db\ActiveQuery;
  * @property int $updated_at
  *
  * @property RbacAction[] $rbacActions
- * @property RbacFunctionalityRbacAction[] $rbacFunctionalityRbacActions
+ * @property RbacBlockRbacAction[] $rbacBlockRbacActions
  * @property RbacProfileRbacController $rbacProfileRbacController
  */
-class RbacFunctionality extends \yii\db\ActiveRecord
+class RbacBlock extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'rbac_functionality';
+        return 'rbac_block';
     }
 
     /**
@@ -89,17 +89,17 @@ class RbacFunctionality extends \yii\db\ActiveRecord
      */
     public function getRbacActions()
     {
-        return $this->hasMany(RbacAction::className(), ['id' => 'rbac_action_id'])->via('rbacFunctionalityRbacActions');
+        return $this->hasMany(RbacAction::className(), ['id' => 'rbac_action_id'])->via('rbacBlockRbacActions');
     }
 
     /**
-     * Gets query for [[RbacFunctionalityRbacActions]].
+     * Gets query for [[RbacBlockRbacActions]].
      *
-     * @return ActiveQuery|RbacFunctionalityRbacActionQuery
+     * @return ActiveQuery|RbacBlockRbacActionQuery
      */
-    public function getRbacFunctionalityRbacActions()
+    public function getRbacBlockRbacActions()
     {
-        return $this->hasMany(RbacFunctionalityRbacAction::className(), ['rbac_functionality_id' => 'id']);
+        return $this->hasMany(RbacBlockRbacAction::className(), ['rbac_block_id' => 'id']);
     }
 
     /**
@@ -114,10 +114,10 @@ class RbacFunctionality extends \yii\db\ActiveRecord
 
     /**
      * {@inheritdoc}
-     * @return RbacFunctionalityQuery the active query used by this AR class.
+     * @return RbacBlockQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new RbacFunctionalityQuery(get_called_class());
+        return new RbacBlockQuery(get_called_class());
     }
 }

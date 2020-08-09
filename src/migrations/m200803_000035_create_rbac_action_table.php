@@ -27,8 +27,8 @@ class m200803_000035_create_rbac_action_table extends Migration
             'updated_at'=> $this->integer()->notNull()
         ]);
 
-        $this->createIndex('idx-rbac_action-rbac_functionality_id', self::TABLE, 'rbac_controller_id');
-        $this->addForeignKey('fk-rbac_action-rbac_functionality_id', self::TABLE, 'rbac_controller_id', '{{%rbac_controller}}', 'id', 'CASCADE', 'CASCADE');
+        $this->createIndex('idx-rbac_action-rbac_block_id', self::TABLE, 'rbac_controller_id');
+        $this->addForeignKey('fk-rbac_action-rbac_block_id', self::TABLE, 'rbac_controller_id', '{{%rbac_controller}}', 'id', 'CASCADE', 'CASCADE');
     }
 
     /**

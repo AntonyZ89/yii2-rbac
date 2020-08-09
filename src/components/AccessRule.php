@@ -4,7 +4,7 @@ namespace antonyz89\rbac\components;
 
 use antonyz89\rbac\models\query\RbacActionQuery;
 use antonyz89\rbac\models\query\RbacControllerQuery;
-use antonyz89\rbac\models\query\RbacFunctionalityQuery;
+use antonyz89\rbac\models\query\RbacBlockQuery;
 use antonyz89\rbac\models\query\RbacProfileQuery;
 use antonyz89\rbac\models\query\RbacProfileRbacControllerQuery;
 use Yii;
@@ -115,7 +115,7 @@ class AccessRule extends AccessRuleBase
 
                 if ($action_id) {
                     $query->joinWith([
-                        'rbacFunctionalities' => static function (RbacFunctionalityQuery $query) use ($action_id) {
+                        'rbacBlocks' => static function (RbacBlockQuery $query) use ($action_id) {
                             $query->joinWith([
                                 'rbacActions' => static function (RbacActionQuery $query) use ($action_id) {
                                     $query->whereName($action_id);

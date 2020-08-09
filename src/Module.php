@@ -167,7 +167,7 @@ class Module extends ModuleBase implements BootstrapInterface
 
         foreach ($this->controllers as $id => $actions) {
             $_controllers[] = RbacController::find()
-                ->with('rbacActions', 'rbacFunctionalities')
+                ->with('rbacActions', 'rbacBlocks')
                 ->whereName($id)
                 ->one();
         }

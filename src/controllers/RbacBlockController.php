@@ -3,26 +3,26 @@
 namespace antonyz89\rbac\controllers;
 
 use antonyz89\rbac\controllers\base\Controller;
-use antonyz89\rbac\models\RbacFunctionality;
+use antonyz89\rbac\models\RbacBlock;
 use Yii;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
 /**
- * Class RbacFunctionalityController
+ * Class RbacBlockController
  * @package antonyz89\rbac\controllers
  *
  * @author Antony Gabriel <antonyz.dev@gmail.com>
  * @since 0.1
  */
-class RbacFunctionalityController extends Controller
+class RbacBlockController extends Controller
 {
     /**
      * @return string|Response
      */
     public function actionCreate($profile_id, $controller_id)
     {
-        $model = new RbacFunctionality();
+        $model = new RbacBlock();
         $model->rbac_profile_id = $profile_id;
         $model->rbac_controller_id = $controller_id;
 
@@ -69,12 +69,12 @@ class RbacFunctionalityController extends Controller
 
     /**
      * @param integer $id
-     * @return RbacFunctionality
+     * @return RbacBlock
      * @throws NotFoundHttpException
      */
     public static function findModel($id)
     {
-        if (($model = RbacFunctionality::findOne($id)) !== null) {
+        if (($model = RbacBlock::findOne($id)) !== null) {
             return $model;
         }
 

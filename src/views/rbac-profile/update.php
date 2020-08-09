@@ -43,10 +43,10 @@ $this->params['breadcrumbs'][] = 'Update';
                         <div>
                             <h4 class="float-left"><?= $rbacController->name ?></h4>
                             <div class="float-right">
-                                <?= Html::a('<i class="fas fa-plus"></i>', ['rbac-functionality/create', 'profile_id' => $controller->rbac_profile_id, 'controller_id' => $controller->rbac_controller_id], [
+                                <?= Html::a('<i class="fas fa-plus"></i>', ['rbac-block/create', 'profile_id' => $controller->rbac_profile_id, 'controller_id' => $controller->rbac_controller_id], [
                                     'class' => 'btn btn-sm btn-outline-primary show-modal',
                                     'data' => [
-                                        'header' => 'Funcionality',
+                                        'header' => 'Block',
                                         'target' => '#modal'
                                     ]
                                 ]) ?>
@@ -68,26 +68,26 @@ $this->params['breadcrumbs'][] = 'Update';
                             <div class="clearfix"></div>
                         </div>
 
-                        <?php foreach ($controller->rbacFunctionalities as $rbacFunctionality): ?>
-                            <div class="functionality">
+                        <?php foreach ($controller->rbacBlocks as $rbacBlock): ?>
+                            <div class="block">
                                 <div>
-                                    <h4 class="float-left"><?= $rbacFunctionality->name ?></h4>
+                                    <h4 class="float-left"><?= $rbacBlock->name ?></h4>
                                     <div class="float-right">
-                                        <?= Html::a('<i class="fas fa-plus"></i>', ['rbac-functionality-rbac-action/create', 'functionality_id' => $rbacFunctionality->id], [
+                                        <?= Html::a('<i class="fas fa-plus"></i>', ['rbac-block-rbac-action/create', 'block_id' => $rbacBlock->id], [
                                             'class' => 'btn btn-sm btn-outline-success show-modal',
                                             'data' => [
                                                 'header' => 'Action',
                                                 'target' => '#modal'
                                             ]
                                         ]) ?>
-                                        <?= Html::a('<i class="fas fa-pencil-alt"></i>', ['rbac-functionality/update', 'id' => $rbacFunctionality->id], [
+                                        <?= Html::a('<i class="fas fa-pencil-alt"></i>', ['rbac-block/update', 'id' => $rbacBlock->id], [
                                             'class' => 'btn btn-sm btn-outline-secondary show-modal',
                                             'data' => [
                                                 'header' => 'Action',
                                                 'target' => '#modal'
                                             ]
                                         ]) ?>
-                                        <?= Html::a('<i class="fas fa-times"></i>', ['rbac-functionality/delete', 'id' => $rbacFunctionality->id], [
+                                        <?= Html::a('<i class="fas fa-times"></i>', ['rbac-block/delete', 'id' => $rbacBlock->id], [
                                             'class' => 'btn btn-sm btn-outline-danger show-modal',
                                             'data' => [
                                                 'header' => 'Action',
@@ -95,24 +95,24 @@ $this->params['breadcrumbs'][] = 'Update';
                                             ]
                                         ]) ?>
                                     </div>
-                                    <h4 class="float-left">(<?= $rbacFunctionality->rule ?>)</h4>
+                                    <h4 class="float-left">(<?= $rbacBlock->rule ?>)</h4>
                                     <div class="clearfix"></div>
                                 </div>
 
-                                <p><?= $rbacFunctionality->description ?></p>
+                                <p><?= $rbacBlock->description ?></p>
                                 <ol class="actions">
-                                    <?php foreach ($rbacFunctionality->rbacFunctionalityRbacActions as $rbacFunctionalityRbacAction): ?>
+                                    <?php foreach ($rbacBlock->rbacBlockRbacActions as $rbacBlockRbacAction): ?>
                                         <li class="clearfix">
-                                            <?= $rbacFunctionalityRbacAction->rbacAction->name ?>
+                                            <?= $rbacBlockRbacAction->rbacAction->name ?>
                                             <div class="float-right">
-                                                <?= Html::a('<i class="fas fa-pencil-alt"></i>', ['rbac-functionality-rbac-action/update', 'rbac_functionality_id' => $rbacFunctionalityRbacAction->rbac_functionality_id, 'rbac_action_id' => $rbacFunctionalityRbacAction->rbac_action_id], [
+                                                <?= Html::a('<i class="fas fa-pencil-alt"></i>', ['rbac-block-rbac-action/update', 'rbac_block_id' => $rbacBlockRbacAction->rbac_block_id, 'rbac_action_id' => $rbacBlockRbacAction->rbac_action_id], [
                                                     'class' => 'btn btn-sm btn-outline-secondary show-modal',
                                                     'data' => [
                                                         'header' => 'Action',
                                                         'target' => '#modal'
                                                     ]
                                                 ]) ?>
-                                                <?= Html::a('<i class="fas fa-times"></i>', ['rbac-functionality-rbac-action/delete', 'rbac_functionality_id' => $rbacFunctionalityRbacAction->rbac_functionality_id, 'rbac_action_id' => $rbacFunctionalityRbacAction->rbac_action_id], [
+                                                <?= Html::a('<i class="fas fa-times"></i>', ['rbac-block-rbac-action/delete', 'rbac_block_id' => $rbacBlockRbacAction->rbac_block_id, 'rbac_action_id' => $rbacBlockRbacAction->rbac_action_id], [
                                                     'class' => 'btn btn-sm btn-outline-danger show-modal',
                                                     'data' => [
                                                         'header' => 'Action',
