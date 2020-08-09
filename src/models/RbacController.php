@@ -15,6 +15,9 @@ use yii\db\ActiveRecord;
 /**
  * This is the model class for table "rbac_controller".
  *
+ * @author Antony Gabriel <antonyz.dev@gmail.com>
+ * @since 0.1
+ *
  * @property int $id
  * @property string $name
  * @property string $application

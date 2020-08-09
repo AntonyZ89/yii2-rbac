@@ -4,6 +4,9 @@ use yii\db\Migration;
 
 /**
  * Handles the creation of table `{{%rbac_action}}`.
+ *
+ * @author Antony Gabriel <antonyz.dev@gmail.com>
+ * @since 0.1
  */
 class m200803_000035_create_rbac_action_table extends Migration
 {
@@ -17,7 +20,7 @@ class m200803_000035_create_rbac_action_table extends Migration
         $this->createTable(self::TABLE, [
             'id' => $this->primaryKey(),
             'rbac_controller_id' => $this->integer()->notNull(),
-            
+
             'name' => $this->string()->notNull(),
 
             'created_at' => $this->integer()->notNull(),

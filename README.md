@@ -175,7 +175,11 @@ use antonyz89\rbac\widgets\Menu;
 ); ?>
 ```
 
+### You can generate a migration with your current data of RBAC clicking on 'Generate Migration' button:
 
+`You can find the migration at 'console/migrations'` and run using `php yii migrate`
+
+![Generate Migration](images/generate-migration.png)
 
 
 

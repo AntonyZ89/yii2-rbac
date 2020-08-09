@@ -9,6 +9,13 @@ use Yii;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
+/**
+ * Class RbacProfileController
+ * @package antonyz89\rbac\controllers
+ *
+ * @author Antony Gabriel <antonyz.dev@gmail.com>
+ * @since 0.1
+ */
 class RbacProfileController extends Controller
 {
     /**

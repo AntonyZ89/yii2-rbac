@@ -8,9 +8,17 @@ use Yii;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
+/**
+ * Class RbacProfileRbacControllerController
+ * @package antonyz89\rbac\controllers
+ *
+ * @author Antony Gabriel <antonyz.dev@gmail.com>
+ * @since 0.1
+ */
 class RbacProfileRbacControllerController extends Controller
 {
     /**
+     * @param integer $rbac_profile_id
      * @return string|Response
      */
     public function actionCreate($rbac_profile_id)
@@ -28,7 +36,8 @@ class RbacProfileRbacControllerController extends Controller
     }
 
     /**
-     * @param $id
+     * @param integer $rbac_profile_id
+     * @param integer $rbac_controller_id
      * @return string|Response
      * @throws NotFoundHttpException
      */
@@ -46,8 +55,8 @@ class RbacProfileRbacControllerController extends Controller
     }
 
     /**
-     * @param $rbac_profile_id
-     * @param $rbac_controller_id
+     * @param integer $rbac_profile_id
+     * @param integer $rbac_controller_id
      * @return Response
      * @throws NotFoundHttpException
      * @throws \Throwable

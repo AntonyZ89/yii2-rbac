@@ -2,15 +2,8 @@
 
 namespace antonyz89\rbac\controllers\base;
 
-use antonyz89\rbac\models\RbacAction;
-use antonyz89\rbac\models\RbacController;
-use antonyz89\rbac\models\RbacFunctionality;
-use antonyz89\rbac\models\RbacFunctionalityRbacAction;
-use antonyz89\rbac\models\search\RbacProfileSearch;
 use Yii;
-use yii\helpers\ArrayHelper;
 use yii\web\Controller as ControllerBase;
-use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
 /**

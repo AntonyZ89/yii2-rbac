@@ -4,6 +4,9 @@ use yii\db\Migration;
 
 /**
  * Handles the creation of table `{{%rbac_functionality}}`.
+ *
+ * @author Antony Gabriel <antonyz.dev@gmail.com>
+ * @since 0.1
  */
 class m200612_002954_create_rbac_functionality_table extends Migration
 {

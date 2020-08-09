@@ -4,17 +4,20 @@ namespace antonyz89\rbac\controllers;
 
 use antonyz89\rbac\controllers\base\Controller;
 use antonyz89\rbac\models\RbacAction;
-use antonyz89\rbac\models\RbacController;
 use antonyz89\rbac\models\RbacFunctionality;
 use antonyz89\rbac\models\RbacFunctionalityRbacAction;
-use antonyz89\rbac\models\RbacProfile;
-use antonyz89\rbac\models\RbacProfileRbacController;
-use antonyz89\rbac\models\search\RbacProfileSearch;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
+/**
+ * Class RbacActionController
+ * @package antonyz89\rbac\controllers
+ *
+ * @author Antony Gabriel <antonyz.dev@gmail.com>
+ * @since 0.1
+ */
 class RbacActionController extends Controller
 {
     /**

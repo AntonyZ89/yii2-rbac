@@ -1,6 +1,5 @@
 <?php
 
-use antonyz89\rbac\models\RbacFunctionality;
 use antonyz89\rbac\models\RbacProfileRbacController;
 use kartik\select2\Select2;
 use yii\helpers\Html;

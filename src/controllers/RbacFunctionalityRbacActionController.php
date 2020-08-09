@@ -3,21 +3,23 @@
 namespace antonyz89\rbac\controllers;
 
 use antonyz89\rbac\controllers\base\Controller;
-use antonyz89\rbac\models\RbacAction;
-use antonyz89\rbac\models\RbacController;
-use antonyz89\rbac\models\RbacFunctionality;
 use antonyz89\rbac\models\RbacFunctionalityRbacAction;
-use antonyz89\rbac\models\RbacProfile;
-use antonyz89\rbac\models\RbacProfileRbacController;
-use antonyz89\rbac\models\search\RbacProfileSearch;
-use yii\helpers\ArrayHelper;
 use Yii;
+use yii\db\StaleObjectException;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
+/**
+ * Class RbacFunctionalityRbacActionController
+ * @package antonyz89\rbac\controllers
+ *
+ * @author Antony Gabriel <antonyz.dev@gmail.com>
+ * @since 0.1
+ */
 class RbacFunctionalityRbacActionController extends Controller
 {
     /**
+     * @param integer $functionality_id
      * @return string|Response
      */
     public function actionCreate($functionality_id)
@@ -35,7 +37,8 @@ class RbacFunctionalityRbacActionController extends Controller
     }
 
     /**
-     * @param $id
+     * @param integer $rbac_functionality_id
+     * @param integer $rbac_action_id
      * @return string|Response
      * @throws NotFoundHttpException
      */
@@ -53,11 +56,12 @@ class RbacFunctionalityRbacActionController extends Controller
     }
 
     /**
-     * @param $id
+     * @param integer $rbac_functionality_id
+     * @param integer $rbac_action_id
      * @return Response
      * @throws NotFoundHttpException
      * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
+     * @throws StaleObjectException
      */
     public function actionDelete($rbac_functionality_id, $rbac_action_id)
     {
@@ -67,7 +71,8 @@ class RbacFunctionalityRbacActionController extends Controller
     }
 
     /**
-     * @param integer $id
+     * @param integer $rbac_functionality_id
+     * @param integer $rbac_action_id
      * @return RbacFunctionalityRbacAction
      * @throws NotFoundHttpException
      */
@@ -77,7 +82,7 @@ class RbacFunctionalityRbacActionController extends Controller
             ->whereRbacFunctionality($rbac_functionality_id)
             ->whereRbacAction($rbac_action_id)
             ->one();
-        
+
         if ($model !== null) {
             return $model;
         }

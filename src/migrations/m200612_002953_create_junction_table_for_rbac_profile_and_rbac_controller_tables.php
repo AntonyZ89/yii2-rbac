@@ -8,6 +8,9 @@ use yii\db\Migration;
  *
  * - `{{%rbac_profile}}`
  * - `{{%rbac_controller}}`
+ *
+ * @author Antony Gabriel <antonyz.dev@gmail.com>
+ * @since 0.1
  */
 class m200612_002953_create_junction_table_for_rbac_profile_and_rbac_controller_tables extends Migration
 {

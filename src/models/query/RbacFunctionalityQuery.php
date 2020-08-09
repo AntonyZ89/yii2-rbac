@@ -9,6 +9,9 @@ use yii\db\ActiveQuery;
  * This is the ActiveQuery class for [[RbacFunctionality]].
  *
  * @see RbacFunctionality
+ *
+ * @author Antony Gabriel <antonyz.dev@gmail.com>
+ * @since 0.1
  */
 class RbacFunctionalityQuery extends ActiveQuery
 {

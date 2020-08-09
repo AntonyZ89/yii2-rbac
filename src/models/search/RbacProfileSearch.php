@@ -2,13 +2,15 @@
 
 namespace antonyz89\rbac\models\search;
 
-use Yii;
+use antonyz89\rbac\models\RbacProfile;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use antonyz89\rbac\models\RbacProfile;
 
 /**
  * RbacProfileSearch represents the model behind the search form of `antonyz89\rbac\models\RbacProfile`.
+ *
+ * @author Antony Gabriel <antonyz.dev@gmail.com>
+ * @since 0.1
  */
 class RbacProfileSearch extends RbacProfile
 {

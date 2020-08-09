@@ -1,9 +1,10 @@
 <?php
 
 use antonyz89\rbac\RbacAsset;
-use yii\helpers\Html;
+use antonyz89\rbac\widgets\Alert;
+use yii\bootstrap4\Modal;
 use yii\bootstrap4\NavBar;
-use yii\bootstrap4\Nav;
+use yii\helpers\Html;
 use yii\web\View;
 
 /* @var $this View */
@@ -23,7 +24,7 @@ RbacAsset::register($this);
     <?php $this->head() ?>
 </head>
 <body>
-    <?= \yii\bootstrap4\Modal::widget(['id' => 'modal']) ?>
+    <?= Modal::widget(['id' => 'modal']) ?>
     <div class="page-container">
         <?php $this->beginBody() ?>
         <?php NavBar::begin([
@@ -46,6 +47,7 @@ RbacAsset::register($this);
         ?>
 
         <div class="container content-container">
+            <?= Alert::widget() ?>
             <?= $content ?>
         </div>
         <div class="footer-fix"></div>

@@ -4,6 +4,9 @@ use yii\db\Migration;
 
 /**
  * Handles the creation of table `{{%rbac_controller}}`.
+ *
+ * @author Antony Gabriel <antonyz.dev@gmail.com>
+ * @since 0.1
  */
 class m200612_002951_create_rbac_controller_table extends Migration
 {

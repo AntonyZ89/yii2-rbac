@@ -3,15 +3,18 @@
 namespace antonyz89\rbac\controllers;
 
 use antonyz89\rbac\controllers\base\Controller;
-use antonyz89\rbac\models\RbacController;
 use antonyz89\rbac\models\RbacFunctionality;
-use antonyz89\rbac\models\RbacProfile;
-use antonyz89\rbac\models\RbacProfileRbacController;
-use antonyz89\rbac\models\search\RbacProfileSearch;
 use Yii;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
+/**
+ * Class RbacFunctionalityController
+ * @package antonyz89\rbac\controllers
+ *
+ * @author Antony Gabriel <antonyz.dev@gmail.com>
+ * @since 0.1
+ */
 class RbacFunctionalityController extends Controller
 {
     /**

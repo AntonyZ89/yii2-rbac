@@ -13,6 +13,9 @@ use yii\db\ActiveQuery;
 /**
  * This is the model class for table "rbac_profile_rbac_controller".
  *
+ * @author Antony Gabriel <antonyz.dev@gmail.com>
+ * @since 0.1
+ *
  * @property int $rbac_profile_id
  * @property int $rbac_controller_id
  * @property int $created_at

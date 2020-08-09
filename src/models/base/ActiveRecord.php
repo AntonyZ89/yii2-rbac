@@ -4,8 +4,8 @@
 namespace antonyz89\rbac\models\base;
 
 
+use yii\db\ActiveRecord as ActiveRecordBase;
 use yii\helpers\Inflector;
-use \yii\db\ActiveRecord as ActiveRecordBase;
 
 /**
  * Class ActiveRecord

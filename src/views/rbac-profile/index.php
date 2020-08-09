@@ -22,6 +22,10 @@ $columns = [
 ];
 
 ?>
+<div class="form-group">
+    <?= Html::a('Generate Migration', ['generator/index'], ['class' => 'btn btn-info']) ?> <span class="text-muted">Create a migration with current rbac data</span>
+</div>
+
 <div class="rbac-profile-index card">
     <div class="card-header">
         <?= Html::a('Create Profile', ['rbac-profile/create'], [

@@ -13,6 +13,9 @@ use yii\db\ActiveRecord;
 /**
  * This is the model class for table "rbac_functionality_rbac_action".
  *
+ * @author Antony Gabriel <antonyz.dev@gmail.com>
+ * @since 0.1
+ *
  * @property int $rbac_functionality_id
  * @property int $rbac_action_id
  * @property int $created_at

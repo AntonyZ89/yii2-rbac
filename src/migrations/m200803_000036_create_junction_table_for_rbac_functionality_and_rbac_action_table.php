@@ -8,6 +8,9 @@ use yii\db\Migration;
  *
  * - `{{%rbac_functionality}}`
  * - `{{%rbac_action}}`
+ *
+ * @author Antony Gabriel <antonyz.dev@gmail.com>
+ * @since 0.1
  */
 class m200803_000036_create_junction_table_for_rbac_functionality_and_rbac_action_table extends Migration
 {
