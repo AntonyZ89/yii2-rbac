@@ -14,7 +14,7 @@ use yii\widgets\ActiveForm;
 
 ?>
 
-<div class="rbac-block-form box box-primary">
+<div class="rbac-block-rbac-action-form box box-primary">
     <?php $form = ActiveForm::begin(); ?>
     <div class="box-body">
         <?= $form->field($model, 'rbac_action_id')->widget(Select2::class, [

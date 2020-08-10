@@ -8,7 +8,7 @@ use yii\web\View;
  * @var $model RbacBlock
  */
 
-$this->title = 'Create Block'
+$this->title = Yii::t('app', 'Create Block')
 ?>
 
 <div class="rbac-block-create">

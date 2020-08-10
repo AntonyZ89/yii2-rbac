@@ -45,12 +45,11 @@ class RbacBlockController extends Controller
         $model = self::findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['rbac-profile/update', 'id' => $model->rbac_profile_id]);
+            Yii::$app->session->setFlash('success', Yii::t('app', 'Block saved successfully.'));
+            return $this->refresh();
         }
 
-        return $this->render('update', [
-            'model' => $model
-        ]);
+        return $this->render('update', ['model' => $model]);
     }
 
     /**

@@ -1,5 +1,10 @@
 /* general */
 
+hr {
+    width: 103.85%;
+    margin-left: -1.2rem;
+}
+
 .modal-header {
     flex-direction: row-reverse;
 }
@@ -29,4 +34,10 @@
 
 ol.actions > li {
     margin-bottom: 2px;
+}
+
+/* rbac-block-update */
+
+.rbac-block-update .card:not(:last-child) {
+    margin-bottom: 1rem;
 }

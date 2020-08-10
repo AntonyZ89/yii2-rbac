@@ -25,6 +25,7 @@ RbacAsset::register($this);
 </head>
 <body>
     <?= Modal::widget(['id' => 'modal']) ?>
+    <?= Modal::widget(['id' => 'modal-lg', 'size' => Modal::SIZE_LARGE]) ?>
     <div class="page-container">
         <?php $this->beginBody() ?>
         <?php NavBar::begin([

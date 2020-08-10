@@ -19,13 +19,13 @@ use yii\web\Response;
 class RbacBlockRbacActionController extends Controller
 {
     /**
-     * @param integer $block_id
+     * @param integer $rbac_block_id
      * @return string|Response
      */
-    public function actionCreate($block_id)
+    public function actionCreate($rbac_block_id)
     {
         $model = new RbacBlockRbacAction();
-        $model->rbac_block_id = $block_id;
+        $model->rbac_block_id = $rbac_block_id;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['rbac-profile/update', 'id' => $model->rbacBlock->rbac_profile_id]);

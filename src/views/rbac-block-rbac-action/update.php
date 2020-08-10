@@ -8,7 +8,7 @@ use yii\web\View;
  * @var $model RbacBlockRbacAction
  */
 
-$this->title = 'Update Action'
+$this->title = Yii::t('app', 'Update Action')
 ?>
 
 <div class="rbac-block-rbac-action-update">

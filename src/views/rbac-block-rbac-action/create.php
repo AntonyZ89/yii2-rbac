@@ -8,7 +8,7 @@ use yii\web\View;
  * @var $model RbacBlockRbacAction
  */
 
-$this->title = 'Create Action'
+$this->title = Yii::t('app', 'Create Action')
 ?>
 
 <div class="rbac-block-rbac-action-create">

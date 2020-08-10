@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = 'Update';
 
         <hr>
 
-        <div class="form-group">
+        <p>
             <?= Html::a('<i class="fa fa-plus"></i> ' . 'Controller', ['rbac-profile-rbac-controller/create', 'rbac_profile_id' => $model->id], [
                 'class' => 'btn btn-success show-modal',
                 'data' => [
@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = 'Update';
                     'target' => '#modal'
                 ]
             ]) ?>
-        </div>
+        </p>
 
         <div class="row">
             <?php foreach ($controllers as $controller): ?>
@@ -83,13 +83,7 @@ $this->params['breadcrumbs'][] = 'Update';
                                                     'target' => '#modal'
                                                 ]
                                             ]) ?>
-                                            <?= Html::a('<i class="fas fa-pencil-alt"></i>', ['rbac-block/update', 'id' => $rbacBlock->id], [
-                                                'class' => 'btn btn-sm btn-outline-secondary show-modal',
-                                                'data' => [
-                                                    'header' => 'Action',
-                                                    'target' => '#modal'
-                                                ]
-                                            ]) ?>
+                                            <?= Html::a('<i class="fas fa-pencil-alt"></i>', ['rbac-block/update', 'id' => $rbacBlock->id], ['class' => 'btn btn-sm btn-outline-secondary']) ?>
                                             <?= Html::a('<i class="fas fa-times"></i>', ['rbac-block/delete', 'id' => $rbacBlock->id], [
                                                 'class' => 'btn btn-sm btn-outline-danger show-modal',
                                                 'data' => [
