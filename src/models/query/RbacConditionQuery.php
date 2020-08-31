@@ -48,7 +48,7 @@ class RbacConditionQuery extends ActiveQuery
      * @param string $operator
      * @return RbacConditionQuery
      */
-    public function whereRbacCondition($rbac_condition_id, $operator = '=')
+    public function whereRbacConditionParent($rbac_condition_id, $operator = '=')
     {
         return $this->andWhere([
             $operator, sprintf('%s.rbac_condition_id', RbacCondition::tableName()), $rbac_condition_id
@@ -60,7 +60,7 @@ class RbacConditionQuery extends ActiveQuery
      * @param string $operator
      * @return RbacConditionQuery
      */
-    public function whereParam($param, $operator = 'LIKE')
+    public function whereParam($param, $operator = '=')
     {
         return $this->andWhere([
             $operator, sprintf('%s.param', RbacCondition::tableName()), $param
@@ -84,7 +84,7 @@ class RbacConditionQuery extends ActiveQuery
      * @param string $operator
      * @return RbacConditionQuery
      */
-    public function whereValue($value, $operator = 'LIKE')
+    public function whereValue($value, $operator = '=')
     {
         return $this->andWhere([
             $operator, sprintf('%s.value', RbacCondition::tableName()), $value

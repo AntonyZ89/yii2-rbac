@@ -63,7 +63,7 @@ class RbacActionQuery extends ActiveQuery
      * @param string $operator
      * @return RbacActionQuery
      */
-    public function whereName($name, $operator = 'LIKE')
+    public function whereName($name, $operator = '=')
     {
         return $this->andWhere([
             $operator, sprintf('%s.name', RbacAction::tableName()), $name

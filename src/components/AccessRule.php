@@ -4,12 +4,12 @@ namespace antonyz89\rbac\components;
 
 use antonyz89\rbac\models\query\RbacActionQuery;
 use antonyz89\rbac\models\query\RbacControllerQuery;
-use antonyz89\rbac\models\query\RbacBlockQuery;
 use antonyz89\rbac\models\query\RbacProfileQuery;
-use antonyz89\rbac\models\query\RbacProfileRbacControllerQuery;
+use antonyz89\rbac\models\RbacProfile;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\filters\AccessRule as AccessRuleBase;
+use yii\web\IdentityInterface;
 use yii\web\User;
 
 class AccessRule extends AccessRuleBase
@@ -97,37 +97,45 @@ class AccessRule extends AccessRuleBase
     /**
      * Search profile for current controller/action
      *
-     * @param $user
+     * @param IdentityInterface $user
      * @param string $controller_id
      * @param string|null $action_id
      * @return bool
      */
-    public static function have($user, $controller_id, $action_id = null)
+    public static function have(IdentityInterface $user, string $controller_id, string $action_id = null)
     {
-        /** @var RbacProfileQuery $profile */
+        /** @var RbacProfileQuery|RbacProfile $profile */
         $profile = $user->getRbacProfile()->joinWith([
-            'rbacProfileRbacControllers' => static function (RbacProfileRbacControllerQuery $query) use ($action_id, $controller_id) {
-                $query->joinWith([
-                    'rbacController' => static function (RbacControllerQuery $query) use ($controller_id) {
-                        $query->whereName($controller_id);
-                    },
-                ]);
-
-                if ($action_id) {
-                    $query->joinWith([
-                        'rbacBlocks' => static function (RbacBlockQuery $query) use ($action_id) {
-                            $query->joinWith([
-                                'rbacActions' => static function (RbacActionQuery $query) use ($action_id) {
-                                    $query->whereName($action_id);
-                                }
-                            ]);
-                        }
-                    ]);
-                }
+            'rbacControllers' => static function (RbacControllerQuery $query) use ($controller_id, $action_id) {
+                $query
+                    ->whereName($controller_id)
+                    ->whereApplication(explode('\\', Yii::$app->controllerNamespace)[0]); /* FIXME */
             }
         ]);
 
-        return $profile->exists();
+        if ($action_id === null) {
+            return $profile->exists();
+        } else {
+            if (!($profile = $profile->one())) {
+                return false;
+            }
+
+            foreach ($profile->rbacControllers as $rbacController) {
+                $rbacBlocks = $rbacController->getRbacBlocks()->joinWith([
+                    'rbacActions' => static function (RbacActionQuery $query) use ($action_id) {
+                        $query->whereName($action_id);
+                    }
+                ])->all();
+
+                foreach ($rbacBlocks as $rbacBlock) {
+                    if ($rbacBlock->isValid($user)) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
 }

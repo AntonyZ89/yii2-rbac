@@ -7,8 +7,11 @@ use yii\web\Controller as ControllerBase;
 use yii\web\Response;
 
 /**
- * @author Qiang Xue <qiang.xue@gmail.com>
- * @since 2.0
+ * Class Controller
+ * @package antonyz89\rbac\controllers\base
+ *
+ * @author Antony Gabriel <antonyz.dev@gmail.com>
+ * @since 0.1
  */
 class Controller extends ControllerBase
 {
@@ -27,6 +30,9 @@ class Controller extends ControllerBase
         return parent::beforeAction($action);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function render($view, $params = [])
     {
         if (Yii::$app->request->isAjax) {

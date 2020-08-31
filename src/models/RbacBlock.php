@@ -8,10 +8,13 @@ use antonyz89\rbac\models\query\RbacBlockRbacActionQuery;
 use antonyz89\rbac\models\query\RbacBlockRbacConditionQuery;
 use antonyz89\rbac\models\query\RbacConditionQuery;
 use antonyz89\rbac\models\query\RbacProfileRbacControllerQuery;
+use TRegx\CleanRegex\Pattern;
 use Yii;
+use yii\base\InvalidConfigException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\web\IdentityInterface;
 
 /**
  * This is the model class for table "rbac_block".
@@ -28,14 +31,20 @@ use yii\db\ActiveRecord;
  * @property int $created_at
  * @property int $updated_at
  *
- * @property RbacAction[] $rbacActions
- * @property RbacBlockRbacAction[] $rbacBlockRbacActions
- * @property RbacBlockRbacCondition[] $rbacBlockRbacConditions
- * @property RbacCondition[] $rbacConditions
- * @property RbacProfileRbacController $rbacProfileRbacController
+ * @property-read RbacAction[] $rbacActions
+ * @property-read RbacBlockRbacAction[] $rbacBlockRbacActions
+ * @property-read RbacBlockRbacCondition[] $rbacBlockRbacConditions
+ * @property-read RbacCondition[] $rbacConditions
+ * @property-read RbacProfileRbacController $rbacProfileRbacController
+ * @property-read string $conditionText
+ * @property-read int $rbacBlockRbacConditionsCount
  */
 class RbacBlock extends ActiveRecord
 {
+
+    private $_conditionText;
+    private $_rbacBlockRbacConditionsCount;
+
     /**
      * {@inheritdoc}
      */
@@ -108,6 +117,18 @@ class RbacBlock extends ActiveRecord
     }
 
     /**
+     * @return int
+     */
+    public function getRbacBlockRbacConditionsCount()
+    {
+        if ($this->_rbacBlockRbacConditionsCount === null) {
+            $this->_rbacBlockRbacConditionsCount = (int)$this->getRbacBlockRbacConditions()->count();
+        }
+
+        return $this->_rbacBlockRbacConditionsCount;
+    }
+
+    /**
      * Gets query for [[RbacBlockRbacConditions]].
      *
      * @return ActiveQuery|RbacBlockRbacConditionQuery
@@ -144,5 +165,168 @@ class RbacBlock extends ActiveRecord
     public static function find()
     {
         return new RbacBlockQuery(get_called_class());
+    }
+
+    /**
+     * @return string
+     */
+    public function getConditionText()
+    {
+
+        if ($this->_conditionText === null) {
+            $str = '';
+
+            foreach ($this->rbacBlockRbacConditions as $rbacBlockRbacCondition) {
+                $condition = $rbacBlockRbacCondition->rbacCondition;
+                $initial_id = $condition->id;
+
+                if ($condition->logical_operator) {
+                    $str .= "<br><b>$condition->logicalOperatorText</b><br>";
+                }
+
+                $str .= $this->rbacBlockRbacConditionsCount ? '<b>(</b><span class="text-primary">' : '<span class="text-primary">';
+
+                while ($condition) {
+                    if ($condition->logical_operator && $condition->id !== $initial_id) {
+                        $str .= "</span> <b>$condition->logicalOperatorText</b> <span class='text-primary'>";
+                    }
+                    $str .= $condition;
+
+                    $condition = $condition->rbacCondition;
+                }
+
+                $str .= $this->rbacBlockRbacConditionsCount ? '</span><b>)</b>' : '</span>';
+            }
+
+            $this->_conditionText = $str;
+        }
+
+        return $this->_conditionText;
+    }
+
+    public function isValid(IdentityInterface $user): bool
+    {
+        $result = true;
+
+        foreach ($this->rbacBlockRbacConditions as $rbacBlockRbacCondition) {
+            $current = $condition = $rbacBlockRbacCondition->rbacCondition;
+
+            $result2 = true;
+
+            while ($condition) {
+                if (
+                    ($condition->logical_operator && !$condition->rbacBlock)
+                    &&
+                    (
+                        ($result2 && $condition->logical_operator === RbacCondition::LOGICAL_OR)
+                        ||
+                        (!$result2 && $condition->logical_operator === RbacCondition::LOGICAL_AND)
+                    )
+                ) {
+                    break;
+                }
+
+                $result2 &= $this->compare($condition->operator, ...$this->values($user, $condition));
+
+                $condition = $condition->rbacCondition;
+            }
+
+            $result &= $result2;
+
+            if ($current->logical_operator) {
+                if ($result2 && $current->logical_operator === RbacCondition::LOGICAL_OR) {
+                    $result = $result2;
+                    break;
+                }
+
+                if(!$result && $current->logical_operator === RbacCondition::LOGICAL_AND) {
+                    break;
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * @throws InvalidConfigException
+     */
+    protected function compare(int $operator, $value1, $value2): bool
+    {
+        switch ($operator) {
+            case RbacCondition::OPERATOR_EQUAL_TO:
+                return $value1 === $value2;
+            case RbacCondition::OPERATOR_NOT_EQUAL:
+                return $value1 !== $value2;
+            case RbacCondition::OPERATOR_GREATER_THAN:
+                return $value1 > $value2;
+            case RbacCondition::OPERATOR_GREATER_THAN_OR_EQUAL_TO:
+                return $value1 >= $value2;
+            case RbacCondition::OPERATOR_LESS_THAN:
+                return $value1 < $value2;
+            case RbacCondition::OPERATOR_LESS_THAN_OR_EQUAL_TO:
+                return $value1 <= $value2;
+            case RbacCondition::OPERATOR_IN:
+                return in_array($value1, $value2, false);
+            case RbacCondition::OPERATOR_NOT_IN:
+                return !in_array($value1, $value2, false);
+            default:
+                throw new InvalidConfigException("Wrong operator '$operator'");
+        }
+    }
+
+    protected function values(IdentityInterface $user, RbacCondition $condition)
+    {
+        $value1 = $this->extract($user, $condition->param);
+        $value2 = $condition->value;
+
+        switch ($condition->value_type) {
+            case RbacCondition::VALUE_TYPE_STRING:
+                if ($user->hasAttribute($value2) || property_exists($user, $value2)) {
+                    $value2 = $this->extract($user, $value2);
+                }
+                break;
+            case RbacCondition::VALUE_TYPE_INTEGER:
+            case RbacCondition::VALUE_TYPE_FLOAT:
+                if (is_numeric($value2)) {
+                    $value2 = $condition->value_type === RbacCondition::VALUE_TYPE_INTEGER ? (int)$value2 : (float)$value2;
+                } else {
+                    $value2 = $this->extract($user, $value2);
+                }
+                break;
+            case RbacCondition::VALUE_TYPE_BOOLEAN:
+                if ($value2 === 'true') {
+                    $value2 = true;
+                } else if ($value2 === 'false') {
+                    $value2 = false;
+                } else if (is_numeric($value2)) {
+                    $value2 = (bool)$value2;
+                } else {
+                    $value2 = $this->extract($user, $value2);
+                }
+                break;
+            case RbacCondition::VALUE_TYPE_ARRAY:
+                try {
+                    if (is_array($result = eval($value2))) {
+                        $value2 = $result;
+                    }
+                } catch (\Exception $e) {
+                    $value2 = $this->extract($user, $value2);
+                }
+                break;
+        }
+
+        return [$value1, $value2];
+    }
+
+    protected function extract(IdentityInterface $user, string $condition)
+    {
+        $condition = Pattern::of('^(\w+\.)+\w+$')->test($condition) ? explode('.', $condition) : [$condition];
+
+        foreach ($condition as $attr) {
+            $user = $user->$attr;
+        }
+
+        return $user;
     }
 }

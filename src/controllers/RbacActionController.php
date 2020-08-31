@@ -41,7 +41,7 @@ class RbacActionController extends Controller
             ->whereId($action_ids, 'NOT IN');
 
         if ($q) {
-            $query->whereName($q);
+            $query->whereName($q, 'LIKE');
         }
 
         $results = ArrayHelper::getColumn($query->limit(10)->all(), static function (RbacAction $model) {

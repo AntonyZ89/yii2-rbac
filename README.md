@@ -108,7 +108,7 @@ class m200808_033148_add_rbac_profile_id_to_user_table extends Migration
      */
     public function safeUp()
     {
-        $this->addColumn('{{%user}}', 'rbac_profile_id', $this->integer()->after('id'));
+        $this->addColumn('{{%user}}', 'rbac_profile_id', $this->integer()->notNull()->after('id'));
         $this->createIndex('idx-user-rbac_profile_id', '{{%user}}', 'rbac_profile_id');
         $this->addForeignKey('fk-user-rbac_profile_id', '{{%user}}', 'rbac_profile_id', '{{%rbac_profile}}', 'id', 'CASCADE', 'CASCADE');
     }
@@ -128,6 +128,18 @@ class m200808_033148_add_rbac_profile_id_to_user_table extends Migration
 3 - use `php yii migrate`
 
 3.1 - Now, include it on `_form.php` and `Class` of your identity.
+
+3.2 - Add `getRbacProfile()`
+
+```php
+    /**
+     * @return \yii\db\ActiveQuery|\antonyz89\rbac\models\query\RbacProfileQuery
+     */
+    public function getRbacProfile()
+    {
+        return $this->hasOne(RbacProfile::class, ['id' => 'rbac_profile_id']);
+    }
+```
 
 4 - Access `http://localhost/rbac` or `http://localhost?r=rbac` and create a Profile with Controllers and Actions that 
 you want whoever has this Profile to be able to access these Controllers and Actions

@@ -51,7 +51,7 @@ class RbacProfileQuery extends ActiveQuery
      * @param string $operator
      * @return RbacProfileQuery
      */
-    public function whereName($name, $operator = 'LIKE')
+    public function whereName($name, $operator = '=')
     {
         return $this->andWhere([
             $operator, sprintf('%s.name', RbacProfile::tableName()), $name

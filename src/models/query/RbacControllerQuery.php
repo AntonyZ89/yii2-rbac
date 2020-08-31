@@ -50,7 +50,7 @@ class RbacControllerQuery extends ActiveQuery
      * @param string $operator
      * @return RbacControllerQuery
      */
-    public function whereName($name, $operator = 'LIKE')
+    public function whereName($name, $operator = '=')
     {
         return $this->andWhere([
             $operator, sprintf('%s.name', RbacController::tableName()), $name
@@ -62,10 +62,23 @@ class RbacControllerQuery extends ActiveQuery
      * @param string $operator
      * @return RbacControllerQuery
      */
-    public function whereApplication($application, $operator = 'LIKE')
+    public function whereApplication($application, $operator = '=')
     {
         return $this->andWhere([
             $operator, sprintf('%s.application', RbacController::tableName()), $application
+        ]);
+    }
+
+    /**
+     * @param string|null $q
+     * @return RbacControllerQuery
+     */
+    public function search($q = null)
+    {
+        return $this->andFilterWhere([
+            'OR',
+            ['LIKE', sprintf('%s.name', RbacController::tableName()), $q],
+            ['LIKE', sprintf('%s.application', RbacController::tableName()), $q]
         ]);
     }
 }

@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = 'Update';
         <div class="row">
             <?php foreach ($controllers as $controller): ?>
                 <?php $rbacController = $controller->rbacController ?>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="controller">
                         <div class="clearfix">
                             <div class="clearfix">
@@ -76,7 +76,7 @@ $this->params['breadcrumbs'][] = 'Update';
                                     <div class="clearfix">
                                         <h4 class="float-left"><?= $rbacBlock->name ?></h4>
                                         <div class="float-right">
-                                            <?= Html::a('<i class="fas fa-plus"></i>', ['rbac-block-rbac-action/create', 'block_id' => $rbacBlock->id], [
+                                            <?= Html::a('<i class="fas fa-plus"></i>', ['rbac-block-rbac-action/create', 'rbac_block_id' => $rbacBlock->id], [
                                                 'class' => 'btn btn-sm btn-outline-success show-modal',
                                                 'data' => [
                                                     'header' => 'Action',
@@ -93,8 +93,12 @@ $this->params['breadcrumbs'][] = 'Update';
                                             ]) ?>
                                         </div>
                                     </div>
+
                                     <h4 class="float-left text-muted">(<?= $rbacBlock->rule ?>)</h4>
                                 </div>
+                                <small>
+                                    <?= $rbacBlock->conditionText ?>
+                                </small>
 
                                 <p><?= $rbacBlock->description ?></p>
                                 <ol class="actions">

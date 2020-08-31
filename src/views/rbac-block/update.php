@@ -9,7 +9,7 @@ use yii\web\View;
  * @var $model RbacBlock
  */
 
-$this->title = Yii::t('app', 'Update Block')
+$this->title = Yii::t('app', 'Update Block');
 ?>
 
 <p>
@@ -35,18 +35,49 @@ $this->title = Yii::t('app', 'Update Block')
         </p>
 
         <?php foreach ($model->rbacBlockRbacConditions as $rbacBlockRbacCondition): ?>
+            <?php if (($rbacCondition = $rbacBlockRbacCondition->rbacCondition)->logical_operator): ?>
+                <p>
+                    <b><?= $rbacCondition->logicalOperatorText ?></b>
+                </p>
+            <?php endif; ?>
             <div class="card">
                 <div class="card-body">
-                    <div>
-                        <?= (string)($rbacCondition = $rbacBlockRbacCondition->rbacCondition) ?>
+                    <div class="d-inline-block">
+                        <?= Html::a($rbacCondition, ['rbac-condition/update', 'id' => $rbacCondition->id], [
+                            'class' => 'show-modal',
+                            'data' => [
+                                'header' => Yii::t('app', 'Update'),
+                                'target' => '#modal-lg'
+                            ]
+                        ]) ?>
                     </div>
-                    <?php while (true): ?>
+
+                    <?php while ($rbacCondition): ?>
+                        <?php $last_id = $rbacCondition->id; ?>
                         <?php if ($rbacCondition = $rbacCondition->rbacCondition): ?>
-                            <div>
-                                <?= (string)$rbacCondition ?>
+                            <?php if ($rbacCondition->logical_operator): ?>
+                                <b><?= $rbacCondition->logicalOperatorText ?></b>
+                            <?php endif; ?>
+                            <div class="d-inline-block">
+                                <?= Html::a($rbacCondition, ['rbac-condition/update', 'id' => $rbacCondition->id], [
+                                    'class' => 'show-modal',
+                                    'data' => [
+                                        'header' => Yii::t('app', 'Update'),
+                                        'target' => '#modal-lg'
+                                    ]
+
+                                ]) ?>
                             </div>
-                        <?php else: ?>
-                            <?php break; ?>
+                        <?php endif; ?>
+
+                        <?php if (!$rbacCondition): ?>
+                            <?= Html::a('<i class="fas fa-plus"></i>', ['rbac-condition/create', 'rbac_condition_id' => $last_id], [
+                                'class' => 'btn btn-sm btn-outline-primary show-modal',
+                                'data' => [
+                                    'header' => Yii::t('app', 'Additional Condition'),
+                                    'target' => '#modal-lg'
+                                ]
+                            ]) ?>
                         <?php endif; ?>
                     <?php endwhile; ?>
                 </div>

@@ -34,13 +34,10 @@ class RbacControllerController extends Controller
             ->whereRbacProfile($rbac_profile_id);
 
         $query = RbacController::find()
-            ->whereId($controller_ids, 'NOT IN');
+            ->whereId($controller_ids, 'NOT IN')
+            ->search($q);
 
-        if ($q) {
-            $query->whereName($q);
-        }
-
-        $results = ArrayHelper::getColumn($query->limit(10)->all(), static function (RbacController $model) {
+        $results = ArrayHelper::getColumn($query->limit(20)->all(), static function (RbacController $model) {
             return [
                 'id' => $model->id,
                 'text' => (string)$model

@@ -75,7 +75,7 @@ class RbacBlockQuery extends ActiveQuery
      * @param string $operator
      * @return RbacBlockQuery
      */
-    public function whereRule($rule, $operator = 'LIKE')
+    public function whereRule($rule, $operator = '=')
     {
         return $this->andWhere([
             $operator, sprintf('%s.rule', RbacBlock::tableName()), $rule
@@ -87,7 +87,7 @@ class RbacBlockQuery extends ActiveQuery
      * @param string $operator
      * @return RbacBlockQuery
      */
-    public function whereName($name, $operator = 'LIKE')
+    public function whereName($name, $operator = '=')
     {
         return $this->andWhere([
             $operator, sprintf('%s.name', RbacBlock::tableName()), $name

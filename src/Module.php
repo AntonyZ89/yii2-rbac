@@ -12,6 +12,10 @@ use yii\base\Module as ModuleBase;
 use yii\helpers\Inflector;
 use yii\web\ForbiddenHttpException;
 
+/**
+ * Class Module
+ * @package antonyz89\rbac
+ */
 class Module extends ModuleBase implements BootstrapInterface
 {
     public $allowedIPs = ['127.0.0.1', '::1'];
@@ -110,9 +114,7 @@ class Module extends ModuleBase implements BootstrapInterface
                 return $value;
             });
 
-            $actions = array_merge($actions, $function_action);
-
-            $this->controllers[$controller_id] = $actions;
+            $this->controllers[$controller_id] = array_merge($actions, $function_action);
         }
 
         $this->insertControllers($application);
@@ -124,8 +126,8 @@ class Module extends ModuleBase implements BootstrapInterface
     public function insertControllers(string $application): void
     {
         $db_controllers = array_map(static function ($value) {
-            return $value->name;
-        }, RbacController::find()->whereApplication($application)->all());
+            return $value['name'];
+        }, RbacController::find()->select('name')->whereApplication($application)->asArray()->all());
 
         $not_inserted_ids = array_diff(array_keys($this->controllers), $db_controllers);
 
@@ -151,14 +153,13 @@ class Module extends ModuleBase implements BootstrapInterface
     public function insertActions(string $controller_id, string $application, array $actions_id): void
     {
         $controller = RbacController::find()
-            ->with('rbacActions')
             ->whereName($controller_id)
             ->whereApplication($application)
             ->one();
 
         $rbacActions = array_map(static function ($value) {
-            return $value->name;
-        }, $controller->rbacActions);
+            return $value['name'];
+        }, $controller->getRbacActions()->select('name')->asArray()->all());
 
         $not_inserted_actions = array_diff($actions_id, $rbacActions);
 
