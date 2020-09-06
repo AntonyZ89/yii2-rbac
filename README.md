@@ -193,6 +193,16 @@ use antonyz89\rbac\widgets\Menu;
 
 ![Generate Migration](images/generate-migration.png)
 
+---
 
+# Conditional Blocks
 
+You can create blocks for each controller added to the profile. 
+Each block can contain a specific condition to allow access to the user to that controller and yours actions.
+
+![Conditions](images/condition.png)
+
+In this case, all users with `user_level = 2`  or `email = 'example@gmail'`  can access this block.
+
+![Profile](images/profile.png)
 

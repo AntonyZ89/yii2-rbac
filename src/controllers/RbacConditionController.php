@@ -31,7 +31,7 @@ class RbacConditionController extends Controller
         $model->rbac_condition_id = $rbac_condition_id;
         $model->logical_operator = $model->rbacConditionParent && !$model->rbacConditionParent->rbacBlock ? $model->rbacConditionParent->logical_operator : null;
 
-        if ($model->rbac_condition_id || (!$model->rbac_condition_id && !$model->rbacCondition)) {
+        if ($model->rbac_condition_id || (!$model->rbac_condition_id && !$model->rbacCondition && RbacBlockRbacCondition::find()->whereRbacBlock($rbac_block_id)->count())) {
             $model->scenario = RbacCondition::SCENARIO_CHILD;
         }
 
