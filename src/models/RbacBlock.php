@@ -249,6 +249,10 @@ class RbacBlock extends ActiveRecord
     }
 
     /**
+     * @param int $operator
+     * @param mixed $value1
+     * @param mixed $value2
+     * @return bool
      * @throws InvalidConfigException
      */
     protected function compare(int $operator, $value1, $value2): bool
@@ -275,7 +279,12 @@ class RbacBlock extends ActiveRecord
         }
     }
 
-    protected function values(IdentityInterface $user, RbacCondition $condition)
+    /**
+     * @param IdentityInterface $user
+     * @param RbacCondition $condition
+     * @return array
+     */
+    protected function values(IdentityInterface $user, RbacCondition $condition): array
     {
         $value1 = $this->extract($user, $condition->param);
         $value2 = $condition->value;
@@ -319,6 +328,13 @@ class RbacBlock extends ActiveRecord
         return [$value1, $value2];
     }
 
+    /**
+     * Get value from object using dot notation
+     *
+     * @param IdentityInterface $user
+     * @param string $condition
+     * @return mixed
+     */
     protected function extract(IdentityInterface $user, string $condition)
     {
         $condition = Pattern::of('^(\w+\.)+\w+$')->test($condition) ? explode('.', $condition) : [$condition];
