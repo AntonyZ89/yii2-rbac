@@ -202,7 +202,7 @@ Each block can contain a specific condition to allow access to the user to that 
 
 ![Conditions](images/condition.png)
 
-In this case, all users with `user_level = 2`  or `email = 'example@gmail'`  can access this block.
+In this case, all users with `user_level = 2`  or `email = 'example@mail.com'`  can access this block.
 
 ![Profile](images/profile.png)
 
