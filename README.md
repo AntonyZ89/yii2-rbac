@@ -137,8 +137,17 @@ class m200808_033148_add_rbac_profile_id_to_user_table extends Migration
      */
     public function getRbacProfile()
     {
-        return $this->hasOne(RbacProfile::class, ['id' => 'rbac_profile_id']);
+        return $this->hasOne(\antonyz89\rbac\models\RbacProfile::class, ['id' => 'rbac_profile_id']);
     }
+```
+
+3.3 - include it on `rules()`
+
+```php
+//rbac_profile_id
+['rbac_profile_id', 'required'],
+['rbac_profile_id', 'integer'],
+['rbac_profile_id', 'exist', 'skipOnError' => true, 'targetClass' => RbacProfile::class, 'targetAttribute' => ['rbac_profile_id' => 'id']],
 ```
 
 4 - Access `http://localhost/rbac` or `http://localhost?r=rbac` and create a Profile with Controllers and Actions that 

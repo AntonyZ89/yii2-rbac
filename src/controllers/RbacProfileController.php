@@ -74,7 +74,7 @@ class RbacProfileController extends Controller
      */
     public static function findModel($id)
     {
-        if (($model = RbacProfile::find($id)->with('rbacProfileRbacControllers')->one()) !== null) {
+        if (($model = RbacProfile::find()->whereId($id)->with('rbacProfileRbacControllers')->one()) !== null) {
             return $model;
         }
 

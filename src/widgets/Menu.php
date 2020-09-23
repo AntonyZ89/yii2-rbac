@@ -4,6 +4,7 @@ namespace antonyz89\rbac\widgets;
 
 use antonyz89\rbac\components\AccessRule;
 use antonyz89\rbac\models\RbacController;
+use antonyz89\rbac\Module;
 use dmstr\widgets\Menu as MenuBase;
 use Yii;
 use yii\helpers\ArrayHelper;
@@ -75,11 +76,13 @@ class Menu extends MenuBase
                 $roles = is_array($item['roles']) ? $item['roles'] : [$item['roles']];
             }
 
-            if ($roles && $user->isGuest && in_array('@', $item['roles'], true)) {
+            if (isset($item['visible']) && !$item['visible']) {
+                $remove = true;
+            } else if ($roles && $user->isGuest && in_array('@', $item['roles'], true)) {
                 $remove = true;
             } else if ($roles && !$user->isGuest && in_array('?', $item['roles'], true)) {
                 $remove = true;
-            } else if ($url && ($controller = RbacController::find()->whereName($controller)->whereApplication(Yii::$app->id)->one())) {
+            } else if ($url && ($controller = RbacController::find()->whereName($controller)->whereApplication(Module::getCurrentApplicationName())->one())) {
                 $user = $user->identity;
                 $action = $controller->getRbacActions()->whereName($action)->one();
                 $remove = !AccessRule::have($user, $controller->name, $action ? $action->name : null);

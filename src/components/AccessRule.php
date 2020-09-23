@@ -6,6 +6,7 @@ use antonyz89\rbac\models\query\RbacActionQuery;
 use antonyz89\rbac\models\query\RbacControllerQuery;
 use antonyz89\rbac\models\query\RbacProfileQuery;
 use antonyz89\rbac\models\RbacProfile;
+use antonyz89\rbac\Module;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\filters\AccessRule as AccessRuleBase;
@@ -109,33 +110,32 @@ class AccessRule extends AccessRuleBase
             'rbacControllers' => static function (RbacControllerQuery $query) use ($controller_id, $action_id) {
                 $query
                     ->whereName($controller_id)
-                    ->whereApplication(explode('\\', Yii::$app->controllerNamespace)[0]); /* FIXME */
+                    ->whereApplication(Module::getCurrentApplicationName());
             }
         ]);
 
         if ($action_id === null) {
             return $profile->exists();
-        } else {
-            if (!($profile = $profile->one())) {
-                return false;
-            }
+        }
 
-            foreach ($profile->rbacControllers as $rbacController) {
-                $rbacBlocks = $rbacController->getRbacBlocks()->joinWith([
-                    'rbacActions' => static function (RbacActionQuery $query) use ($action_id) {
-                        $query->whereName($action_id);
-                    }
-                ])->all();
+        if (!($profile = $profile->one())) {
+            return false;
+        }
 
-                foreach ($rbacBlocks as $rbacBlock) {
-                    if ($rbacBlock->isValid($user)) {
-                        return true;
-                    }
+        foreach ($profile->rbacControllers as $rbacController) {
+            $rbacBlocks = $rbacController->getRbacBlocks()->joinWith([
+                'rbacActions' => static function (RbacActionQuery $query) use ($action_id) {
+                    $query->whereName($action_id);
+                }
+            ])->all();
+
+            foreach ($rbacBlocks as $rbacBlock) {
+                if ($rbacBlock->isValid($user)) {
+                    return true;
                 }
             }
         }
 
         return false;
     }
-
 }

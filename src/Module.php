@@ -22,6 +22,7 @@ class Module extends ModuleBase implements BootstrapInterface
 
     /** @var string[][] */
     protected $controllers = [];
+    protected static $_currentApplicationName;
 
     /**
      * {@inheritdoc}
@@ -169,5 +170,13 @@ class Module extends ModuleBase implements BootstrapInterface
             $rbacAction->name = $action_id;
             $rbacAction->save();
         }
+    }
+
+    /**
+     * @return string
+     */
+    public static function getCurrentApplicationName()
+    {
+        return self::$_currentApplicationName ?? (self::$_currentApplicationName = explode('\\', Yii::$app->controllerNamespace)[0]);
     }
 }
